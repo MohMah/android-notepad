@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+#DBFlow
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
