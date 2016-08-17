@@ -2,9 +2,9 @@ package ir.cafebazaar.notepad.models;
 
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import ir.cafebazaar.notepad.database.AppDatabase;
-import java.sql.Blob;
 import java.util.Date;
 
 /**
@@ -20,8 +20,15 @@ public class Note extends BaseModel{
 	private Blob drawing;
 	private Date createdAt;
 	private Date lastModified;
-	
 	public Note(){}
+
+	public int getId(){
+		return id;
+	}
+	
+	public void setId(int id){
+		this.id = id;
+	}
 
 	public String getTitle(){
 		return title;
