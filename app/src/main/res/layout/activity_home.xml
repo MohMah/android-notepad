@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto">
-
-	<android.support.v7.widget.Toolbar
-			android:id="@+id/toolbar"
+<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawer_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
+	<!-- The main content view -->
+	<android.support.design.widget.CoordinatorLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="?attr/colorPrimary"
-			app:title="Notes"
-			/>
+			android:layout_height="match_parent"
+			>
 
-</LinearLayout>
+		<android.support.design.widget.AppBarLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
+
+			<android.support.v7.widget.Toolbar
+					android:id="@+id/toolbar"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:theme="@style/ToolbarTheme"
+					app:title="Notes"
+					app:titleTextAppearance="@style/Toolbar.TitleText"
+					/>
+		</android.support.design.widget.AppBarLayout>
+
+	</android.support.design.widget.CoordinatorLayout>
+	<!-- The navigation drawer -->
+	<android.support.design.widget.NavigationView
+			android:id="@+id/nav_view"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			android:fitsSystemWindows="true"
+			/>
+</android.support.v4.widget.DrawerLayout>
