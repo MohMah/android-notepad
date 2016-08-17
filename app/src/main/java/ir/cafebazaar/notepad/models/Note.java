@@ -1,13 +1,19 @@
 package ir.cafebazaar.notepad.models;
 
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+import ir.cafebazaar.notepad.database.AppDatabase;
 import java.sql.Blob;
 import java.util.Date;
 
 /**
  * Created by MohMah on 8/17/2016.
  */
-public class Note{
+@Table(database = AppDatabase.class, allFields = true)
+public class Note extends BaseModel{
 
+	@PrimaryKey(autoincrement = true)
 	private int id;
 	private String title;
 	private String body;
