@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
   compileSdkVersion 23
@@ -34,9 +35,7 @@ android {
       shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-    debug{
-
-    }
+    debug {}
   }
 }
 
@@ -46,11 +45,14 @@ def getDate() {
   return formattedDate
 }
 
-ext {
-  supportLibVersion = '23.3.0' // variable that can be referenced to keep support libs consistent
-}
+// variable that can be referenced to keep support libs consistent
+def supportLibVersion = '23.3.0'
 
+def dbflow_version = "3.1.1"
 
 dependencies {
   compile "com.android.support:appcompat-v7:${supportLibVersion}"
+  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
 }
