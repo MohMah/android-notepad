@@ -4,6 +4,23 @@ android {
   compileSdkVersion 23
   buildToolsVersion "23.0.3"
 
+  //copy the mapping files somewhere else so they are not overridden.
+  applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+      if (variant.getBuildType().name == 'release') {
+        variant.assemble.doLast {
+          copy {
+            from variant.mappingFile
+            into "${rootDir}/mappings"
+            rename { String fileName -> "mapping-${variant.name}-v.${defaultConfig.versionName}-" + getDate() + ".txt"
+            }
+          }
+        }
+      }
+    }
+  }
+
+
   defaultConfig {
     applicationId "ir.cafebazaar.notepad"
     minSdkVersion 14
