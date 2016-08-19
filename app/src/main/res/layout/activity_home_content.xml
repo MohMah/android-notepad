@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:showIn="@layout/activity_home"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
+
+	<android.support.design.widget.AppBarLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+
+		<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_scrollFlags="scroll|enterAlways"
+				app:theme="@style/ToolbarTheme"
+				app:title="Notes"
+				app:titleTextAppearance="@style/Toolbar.TitleText"
+				/>
+	</android.support.design.widget.AppBarLayout>
+
+	<android.support.v7.widget.RecyclerView
+			android:id="@+id/recycler_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:paddingRight="@dimen/notes_gap"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"
+			/>
+
+	<android.support.design.widget.FloatingActionButton
+			android:id="@+id/new_note"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_note_add_white_24dp"
+			app:fabSize="normal"
+			app:layout_anchor="@id/recycler_view"
+			app:layout_anchorGravity="bottom|right"
+			app:rippleColor="@color/md_deep_orange_300"
+			/>
+
+</android.support.design.widget.CoordinatorLayout>

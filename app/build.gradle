@@ -1,8 +1,26 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
   compileSdkVersion 23
   buildToolsVersion "23.0.3"
+
+  //copy the mapping files somewhere else so they are not overridden.
+  applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+      if (variant.getBuildType().name == 'release') {
+        variant.assemble.doLast {
+          copy {
+            from variant.mappingFile
+            into "${rootDir}/mappings"
+            rename { String fileName -> "mapping-${variant.name}-v.${defaultConfig.versionName}-" + getDate() + ".txt"
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   defaultConfig {
     applicationId "ir.cafebazaar.notepad"
@@ -14,11 +32,31 @@ android {
   buildTypes {
     release {
       minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      shrinkResources true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
+    debug {}
   }
 }
 
+def getDate() {
+  def date = new Date()
+  def formattedDate = date.format('yyyy.MM.dd-HH.mm')
+  return formattedDate
+}
+
+// variable that can be referenced to keep support libs consistent
+def supportLibVersion = '23.3.0'
+
+def dbflow_version = "3.1.1"
+
 dependencies {
-  compile 'com.android.support:appcompat-v7:23.4.0'
+  compile "com.android.support:appcompat-v7:${supportLibVersion}"
+  compile "com.android.support:design:${supportLibVersion}"
+  compile "com.android.support:cardview-v7:${supportLibVersion}"
+  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+  compile 'com.jakewharton:butterknife:8.2.1'
+  apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }
