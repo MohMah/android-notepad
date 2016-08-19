@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="56dp"
+		xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<ImageButton
+			android:id="@+id/left_button"
+			android:layout_width="56dp"
+			android:layout_height="56dp"
+			android:layout_gravity="left|center_vertical"
+			android:background="?selectableItemBackgroundBorderless"
+			android:padding="16dp"
+			android:src="@drawable/ic_add_white_24dp"
+			android:tint="@color/md_blue_grey_600"
+			/>
+
+	<EditText
+			android:id="@+id/folder_name_text"
+			android:layout_width="match_parent"
+			android:layout_height="56dp"
+			android:layout_marginLeft="56dp"
+			android:layout_marginRight="56dp"
+			android:background="@null"
+			android:hint="Create new folder"
+			android:imeOptions="actionDone"
+			android:paddingLeft="3dp"
+			android:singleLine="true"
+			android:textColorHint="@color/md_grey_500"
+			/>
+
+	<ImageButton
+			android:id="@+id/done_button"
+			android:layout_width="56dp"
+			android:layout_height="56dp"
+			android:layout_gravity="right|center_vertical"
+			android:background="?selectableItemBackgroundBorderless"
+			android:padding="16dp"
+			android:src="@drawable/ic_done_white_24dp"
+			android:tint="@color/md_green_A700"
+			android:visibility="gone"
+			/>
+
+</FrameLayout>
