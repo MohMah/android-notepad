@@ -28,8 +28,21 @@
 			android:id="@+id/recycler_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:paddingRight="@dimen/notes_gap"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior"
 			/>
 
+	<android.support.design.widget.FloatingActionButton
+			android:id="@+id/new_note"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_note_add_white_24dp"
+			app:fabSize="normal"
+			app:layout_anchor="@id/recycler_view"
+			app:layout_anchorGravity="bottom|right"
+			app:rippleColor="@color/md_deep_orange_300"
+			/>
+
 </android.support.design.widget.CoordinatorLayout>
-	
