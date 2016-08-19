@@ -17,7 +17,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@color/md_blue_grey_500"
-				app:layout_scrollFlags="scroll|enterAlways"
 				app:theme="@style/ToolbarTheme"
 				app:title="Edit Folders"
 				app:titleTextAppearance="@style/Toolbar.TitleText"

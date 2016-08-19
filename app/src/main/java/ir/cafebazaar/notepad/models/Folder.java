@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(database = AppDatabase.class, allFields = true)
 public class Folder extends BaseModel{
 
-	@PrimaryKey
+	@PrimaryKey(autoincrement = true)
 	private int id;
 	private String name;
 	private Date createdAt;

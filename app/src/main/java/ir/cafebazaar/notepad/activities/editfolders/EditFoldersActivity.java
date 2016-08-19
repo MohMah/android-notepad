@@ -10,15 +10,18 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ir.cafebazaar.notepad.R;
+import se.emilsjolander.intentbuilder.IntentBuilder;
 
 /**
  * Created by MohMah on 8/19/2016.
  */
+@IntentBuilder
 public class EditFoldersActivity extends AppCompatActivity{
 	private static final String TAG = "EditFoldersActivity";
 
 	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+	Adapter adapter;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -34,8 +37,18 @@ public class EditFoldersActivity extends AppCompatActivity{
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		mRecyclerView.setLayoutManager(llm);
-		Adapter adapter = new Adapter();
+		adapter = new Adapter();
 		mRecyclerView.setAdapter(adapter);
-		//adapter.loadFromDatabase();
+		adapter.loadFromDatabase();
+	}
+
+	@Override protected void onStart(){
+		super.onStart();
+		adapter.registerEventBus();
+	}
+
+	@Override protected void onStop(){
+		super.onStop();
+		adapter.unregisterEventBus();
 	}
 }
