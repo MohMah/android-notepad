@@ -4,6 +4,7 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import ir.cafebazaar.notepad.database.AppDatabase;
+import java.util.Date;
 
 /**
  * Created by MohMah on 8/17/2016.
@@ -11,10 +12,10 @@ import ir.cafebazaar.notepad.database.AppDatabase;
 @Table(database = AppDatabase.class, allFields = true)
 public class Folder extends BaseModel{
 
-	@PrimaryKey(autoincrement = true)
+	@PrimaryKey
 	private int id;
 	private String name;
-	private Long createdAt;
+	private Date createdAt;
 
 	public int getId(){
 		return id;
@@ -32,11 +33,11 @@ public class Folder extends BaseModel{
 		this.name = name;
 	}
 
-	public Long getCreatedAt(){
+	public Date getCreatedAt(){
 		return createdAt;
 	}
 
-	public void setCreatedAt(Long createdAt){
+	public void setCreatedAt(Date createdAt){
 		this.createdAt = createdAt;
 	}
 }
