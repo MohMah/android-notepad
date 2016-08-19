@@ -8,4 +8,5 @@
 	<color name="secondaryText">#757575</color>
 	<color name="divider">#BDBDBD</color>
 	<color name="iconAndText">#FFFFFF</color>
+	<color name="activityBackground">@color/md_grey_200</color>
 </resources>
