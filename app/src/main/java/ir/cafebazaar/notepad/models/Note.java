@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(database = AppDatabase.class, allFields = true)
 public class Note extends BaseModel{
 
-	@PrimaryKey(autoincrement = true)
+	@PrimaryKey
 	private int id;
 	private String title;
 	private String body;
