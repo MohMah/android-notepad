@@ -3,7 +3,8 @@
 		android:id="@+id/drawer_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		xmlns:android="http://schemas.android.com/apk/res/android">
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
 	<!-- The main content view -->
 	<include layout="@layout/activity_home_content"/>
 	<!-- The navigation drawer -->
@@ -13,5 +14,6 @@
 			android:layout_height="match_parent"
 			android:layout_gravity="start"
 			android:fitsSystemWindows="true"
+			app:headerLayout="@layout/view_navigation_header"
 			/>
 </android.support.v4.widget.DrawerLayout>
