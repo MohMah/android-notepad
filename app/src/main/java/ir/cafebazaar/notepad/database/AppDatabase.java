@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by MohMah on 8/17/2016.
@@ -29,16 +30,28 @@ public class AppDatabase{
 			for (int i = 0; i < count; i++){
 				Note note = new Note();
 				String ithNote = "Note " + (i + 1);
-				note.setBody(ithNote + "'s Body Text Goes Here");
+				String noteBody = "";
+				Random random = new Random();
+				int r = random.nextInt(20);
+				for (int j = 0; j < r; j++){
+					noteBody += "Some text in this line\n";
+				}
+
+				note.setBody(noteBody.trim());
 				note.setCreatedAt(new Date());
 				note.setLastModified(new Date());
 				note.setId(i);
 				note.setTitle(ithNote + "'s Title");
+				note.save();
 			}
 		}
 
 		public static void deleteAllFolders(){
 			SQLite.delete().from(Folder.class).execute();
+		}
+
+		public static void deleteAllNotes(){
+			SQLite.delete().from(Note.class).execute();
 		}
 	}
 }
