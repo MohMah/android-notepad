@@ -15,9 +15,9 @@ import android.view.SubMenu;
 import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
-import ir.cafebazaar.notepad.database.AppDatabase;
+import ir.cafebazaar.notepad.activities.editfolders.EditFoldersActivityIntentBuilder;
+import ir.cafebazaar.notepad.database.FoldersDAO;
 import ir.cafebazaar.notepad.models.Folder;
 import java.util.List;
 
@@ -44,9 +44,10 @@ public class HomeActivity extends AppCompatActivity{
 				mDrawerLayout.openDrawer(Gravity.LEFT);
 			}
 		});
-		AppDatabase.Utils.createSomeFolders(4);
-		AppDatabase.Utils.createSomeNotes(7);
-		inflateNavigationMenus();
+		//AppDatabase.Utils.deleteAllFolders();
+		//AppDatabase.Utils.deleteAllNotes();
+		//AppDatabase.Utils.createSomeFolders(4);
+		//AppDatabase.Utils.createSomeNotes(7);
 		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 		slm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 		mRecyclerView.setLayoutManager(slm);
@@ -55,15 +56,24 @@ public class HomeActivity extends AppCompatActivity{
 		adapter.loadFromDatabase();
 	}
 
+	@Override protected void onStart(){
+		super.onStart();
+		inflateNavigationMenus();
+	}
+
 	public void inflateNavigationMenus(){
 		Menu menu = mNavigationView.getMenu();
+		menu.clear();
 		menu.add("Notes").setIcon(R.drawable.ic_note_white_24dp).setChecked(true);
 		final SubMenu subMenu = menu.addSubMenu("Folders");
-		List<Folder> folders = SQLite.select().from(Folder.class).queryList();
+		List<Folder> folders = FoldersDAO.getLatestFolders();
 		for (Folder folder : folders){
 			subMenu.add(folder.getName()).setIcon(R.drawable.ic_folder_black_24dp);
 		}
-		menu.add("Create new folder").setIcon(R.drawable.ic_add_white_24dp);
+		menu
+				.add("Create new folder")
+				.setIcon(R.drawable.ic_add_white_24dp)
+				.setIntent(new EditFoldersActivityIntentBuilder().build(this));
 		menu.addSubMenu(" ").add(" ");
 	}
 

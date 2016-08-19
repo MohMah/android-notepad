@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.App;
-import ir.cafebazaar.notepad.Views.NoteCardView;
+import ir.cafebazaar.notepad.views.NoteCardView;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.SimpleViewHolder;
 import java.util.List;
