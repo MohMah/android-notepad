@@ -1,14 +1,14 @@
 package ir.cafebazaar.notepad.activities.home;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import ir.cafebazaar.notepad.App;
-import ir.cafebazaar.notepad.views.NoteCardView;
+import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.SimpleViewHolder;
+import ir.cafebazaar.notepad.views.NoteCardView;
 import java.util.List;
 
 /**
@@ -22,7 +22,8 @@ class Adapter extends RecyclerView.Adapter{
 		@Override public void onClick(View v){
 			if (v instanceof NoteCardView){
 				NoteCardView noteCardView = (NoteCardView) v;
-				Toast.makeText(App.CONTEXT, "Clicked "+noteCardView.getNote().getTitle(), Toast.LENGTH_SHORT).show();
+				Intent intent = new NoteActivityIntentBuilder().note(noteCardView.getNote()).build(v.getContext());
+				v.getContext().startActivity(intent);
 			}
 		}
 	};

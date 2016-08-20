@@ -44,10 +44,6 @@ public class HomeActivity extends AppCompatActivity{
 				mDrawerLayout.openDrawer(Gravity.LEFT);
 			}
 		});
-		//AppDatabase.Utils.deleteAllFolders();
-		//AppDatabase.Utils.deleteAllNotes();
-		//AppDatabase.Utils.createSomeFolders(4);
-		//AppDatabase.Utils.createSomeNotes(7);
 		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 		slm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 		mRecyclerView.setLayoutManager(slm);
@@ -71,7 +67,7 @@ public class HomeActivity extends AppCompatActivity{
 			subMenu.add(folder.getName()).setIcon(R.drawable.ic_folder_black_24dp);
 		}
 		menu
-				.add("Create new folder")
+				.add("Create & edit folders")
 				.setIcon(R.drawable.ic_add_white_24dp)
 				.setIntent(new EditFoldersActivityIntentBuilder().build(this));
 		menu.addSubMenu(" ").add(" ");
