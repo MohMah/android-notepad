@@ -2,10 +2,12 @@ package ir.cafebazaar.notepad.activities.home;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
+import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.SimpleViewHolder;
@@ -31,6 +33,12 @@ class Adapter extends RecyclerView.Adapter{
 		}
 	};
 
+	private View zeroNotesView;
+
+	public Adapter(View zeroNotesView){
+		this.zeroNotesView = zeroNotesView;
+	}
+
 	@Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 		View view = new NoteCardView(parent.getContext());
 		view.setOnClickListener(noteOnClickListener);
@@ -45,7 +53,10 @@ class Adapter extends RecyclerView.Adapter{
 	}
 
 	@Override public int getItemCount(){
-		return notes == null ? 0 : notes.size();
+		int size = notes == null ? 0 : notes.size();
+		if (size == 0) zeroNotesView.setVisibility(View.VISIBLE);
+		else zeroNotesView.setVisibility(View.GONE);
+		return size;
 	}
 
 	void loadFromDatabase(){
@@ -66,12 +77,22 @@ class Adapter extends RecyclerView.Adapter{
 		if (notes.contains(note)){
 			int index = notes.indexOf(note);
 			notes.remove(index);
-			notes.add(0,note);
-			notifyItemMoved(index,0);
+			notes.add(0, note);
+			notifyItemMoved(index, 0);
 			notifyItemChanged(0);
 		}else{
 			notes.add(0, note);
 			notifyItemInserted(0);
+		}
+	}
+
+	@Subscribe public void onNoteDeletedEvent(NoteDeletedEvent noteDeletedEvent){
+		Log.e(TAG, "onNoteDeletedEvent() called with: " + "noteDeletedEvent = [" + noteDeletedEvent.getNote() + "]");
+		Note note = noteDeletedEvent.getNote();
+		if (notes.contains(note)){
+			int index = notes.indexOf(note);
+			notes.remove(index);
+			notifyItemRemoved(index);
 		}
 	}
 }

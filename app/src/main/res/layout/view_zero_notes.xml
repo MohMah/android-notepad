@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+		android:id="@+id/zero_notes_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="40dp"
+		android:visibility="gone"
+		xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_above="@+id/text1"
+			android:layout_centerHorizontal="true"
+			android:src="@drawable/ic_note_white_48dp"
+			android:tint="@color/md_blue_grey_400"
+			/>
+
+	<TextView
+			android:id="@+id/text1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:gravity="center"
+			android:text="You have no notes!"
+			android:textColor="@color/md_blue_grey_400"
+			android:textSize="@dimen/h1"
+			/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/text1"
+			android:gravity="center"
+			android:paddingTop="10dp"
+			android:text="Click on the button below to create your first note!"
+			android:textColor="@color/md_blue_grey_200"
+			android:textSize="@dimen/h3"
+			/>
+
+
+</RelativeLayout>
