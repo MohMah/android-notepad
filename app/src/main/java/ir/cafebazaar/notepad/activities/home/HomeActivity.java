@@ -32,6 +32,8 @@ public class HomeActivity extends AppCompatActivity{
 	@BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 	@BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 	@BindView(R.id.new_note) FloatingActionButton mNewNoteFAB;
+	@BindView(R.id.zero_notes_view) View zeroNotesView;
+	Adapter adapter;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class HomeActivity extends AppCompatActivity{
 		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 		slm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 		mRecyclerView.setLayoutManager(slm);
-		Adapter adapter = new Adapter();
+		adapter = new Adapter(zeroNotesView);
 		mRecyclerView.setAdapter(adapter);
 		adapter.loadFromDatabase();
 	}

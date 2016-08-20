@@ -45,4 +45,9 @@
 			app:rippleColor="@color/md_deep_orange_300"
 			/>
 
+	<include
+			layout="@layout/view_zero_notes"
+			/>
+
+
 </android.support.design.widget.CoordinatorLayout>
