@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Button
+			android:id="@+id/create_5_notes"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Create 5 Notes"
+			/>
+
+	<Button
+			android:id="@+id/assign_to_folders"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Assign first note to all folders"
+			/>
+
+</LinearLayout>
