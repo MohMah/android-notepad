@@ -10,6 +10,7 @@ import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
 import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
+import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.SimpleViewHolder;
 import ir.cafebazaar.notepad.views.NoteCardView;
@@ -23,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 class Adapter extends RecyclerView.Adapter{
 
 	private static final String TAG = "Adapter";
+	private final Folder folder;
 	List<Note> notes;
 	View.OnClickListener noteOnClickListener = new View.OnClickListener(){
 		@Override public void onClick(View v){
@@ -36,8 +38,9 @@ class Adapter extends RecyclerView.Adapter{
 
 	private View zeroNotesView;
 
-	public Adapter(View zeroNotesView){
+	public Adapter(View zeroNotesView,Folder folder){
 		this.zeroNotesView = zeroNotesView;
+		this.folder = folder;
 	}
 
 	@Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -61,7 +64,7 @@ class Adapter extends RecyclerView.Adapter{
 	}
 
 	void loadFromDatabase(){
-		notes = NotesDAO.getLatestNotes();
+		notes = NotesDAO.getLatestNotes(folder);
 		notifyDataSetChanged();
 	}
 
