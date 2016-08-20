@@ -1,6 +1,7 @@
 package ir.cafebazaar.notepad.activities.home;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -88,11 +89,21 @@ class Adapter extends RecyclerView.Adapter{
 
 	@Subscribe public void onNoteDeletedEvent(NoteDeletedEvent noteDeletedEvent){
 		Log.e(TAG, "onNoteDeletedEvent() called with: " + "noteDeletedEvent = [" + noteDeletedEvent.getNote() + "]");
-		Note note = noteDeletedEvent.getNote();
+		final Note note = noteDeletedEvent.getNote();
 		if (notes.contains(note)){
 			int index = notes.indexOf(note);
 			notes.remove(index);
 			notifyItemRemoved(index);
+			Snackbar
+					.make(zeroNotesView, "Deleted Note " + note.getTitle(), Snackbar.LENGTH_LONG)
+					.setAction("UNDO",
+							new View.OnClickListener(){
+								@Override public void onClick(View v){
+									note.save();
+									EventBus.getDefault().post(new NoteEditedEvent(note));
+								}
+							})
+					.show();
 		}
 	}
 }
