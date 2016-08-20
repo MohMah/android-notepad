@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -103,7 +102,7 @@ public class NoteActivity extends AppCompatActivity{
 				note.delete();
 				return;
 			}
-			note.setSpannedBody(new SpannableString(processedBody));
+			note.setSpannedBody(body.getText());
 			note.setTitle(processedTitle);
 			note.setLastModified(new Date());
 			note.save();
