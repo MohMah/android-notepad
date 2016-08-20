@@ -143,4 +143,11 @@ public class Note extends BaseModel implements Parcelable{
 	@Override public int hashCode(){
 		return id;
 	}
+
+	@Override public String toString(){
+		return "Note{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				"} " + super.toString();
+	}
 }

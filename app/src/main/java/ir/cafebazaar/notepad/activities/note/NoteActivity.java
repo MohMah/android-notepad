@@ -1,14 +1,14 @@
 package ir.cafebazaar.notepad.activities.note;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,11 +16,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
+import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
+import ir.cafebazaar.notepad.models.Note_Table;
+import ir.cafebazaar.notepad.utils.ViewUtils;
 import java.util.Date;
 import org.greenrobot.eventbus.EventBus;
 import se.emilsjolander.intentbuilder.Extra;
@@ -39,6 +43,7 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.title) EditText title;
 	@BindView(R.id.body) RichEditText body;
 	@BindView(R.id.folders_tag_view) HashtagView foldersTag;
+	private boolean shouldFireDeleteEvent = false;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -46,14 +51,14 @@ public class NoteActivity extends AppCompatActivity{
 		NoteActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
 		setSupportActionBar(mToolbar);
-		final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
-		upArrow.setColorFilter(getResources().getColor(R.color.md_blue_grey_700), PorterDuff.Mode.SRC_ATOP);
-		mToolbar.setNavigationIcon(upArrow);
+		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.md_blue_grey_400));
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener(){
 			@Override public void onClick(View v){
 				onBackPressed();
 			}
 		});
+
+		Log.e(TAG, "onCreate() called with: " + "Note = [" + note + "]");
 
 		if (note == null){
 			note = new Note();
@@ -70,29 +75,6 @@ public class NoteActivity extends AppCompatActivity{
 		});
 
 		body.enableActionModes(true);
-		//body.setOnSelectionChangedListener(new RichEditText.OnSelectionChangedListener(){
-		//	@Override public void onSelectionChanged(int i, int i1, List<Effect<?>> list){
-		//		Log.e(TAG, "onSelectionChanged() called with: " + "i = [" + i + "], i1 = [" + i1 + "], list = [" + list + "]");
-		//	}
-		//});
-		//startSupportActionMode(new ActionMode.Callback(){
-		//	@Override public boolean onCreateActionMode(ActionMode mode, Menu menu){
-		//		menu.add("Action 1").setIcon(R.drawable.ic_folder_black_24dp);
-		//		return true;
-		//	}
-		//
-		//	@Override public boolean onPrepareActionMode(ActionMode mode, Menu menu){
-		//		return false;
-		//	}
-		//
-		//	@Override public boolean onActionItemClicked(ActionMode mode, MenuItem item){
-		//		return false;
-		//	}
-		//
-		//	@Override public void onDestroyActionMode(ActionMode mode){
-		//
-		//	}
-		//});
 	}
 
 	private void bind(){
@@ -112,17 +94,21 @@ public class NoteActivity extends AppCompatActivity{
 	@Override protected void onStop(){
 		super.onStop();
 		assert note != null;
-		String processedTitle = title.getText().toString().trim();
-		String processedBody = body.getText().toString().trim();
-		if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody)){
-			note.delete();
-			return;
+		if (shouldFireDeleteEvent){
+			EventBus.getDefault().post(new NoteDeletedEvent(note));
+		}else{
+			String processedTitle = title.getText().toString().trim();
+			String processedBody = body.getText().toString().trim();
+			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody)){
+				note.delete();
+				return;
+			}
+			note.setSpannedBody(new SpannableString(processedBody));
+			note.setTitle(processedTitle);
+			note.setLastModified(new Date());
+			note.save();
+			EventBus.getDefault().post(new NoteEditedEvent(note));
 		}
-		note.setSpannedBody(new SpannableString(processedBody));
-		note.setTitle(processedTitle);
-		note.save();
-		note.setLastModified(new Date());
-		EventBus.getDefault().post(new NoteEditedEvent(note));
 	}
 
 	@Override protected void onStart(){
@@ -131,6 +117,17 @@ public class NoteActivity extends AppCompatActivity{
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu){
+		getMenuInflater().inflate(R.menu.note_menu, menu);
+		ViewUtils.tintMenu(menu, R.id.delete_note, R.color.md_blue_grey_400);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.delete_note){
+			SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
+			shouldFireDeleteEvent = true;
+			onBackPressed();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
