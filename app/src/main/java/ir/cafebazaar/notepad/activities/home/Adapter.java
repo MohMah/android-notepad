@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
+import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Note;
@@ -60,7 +60,7 @@ class Adapter extends RecyclerView.Adapter{
 	}
 
 	void loadFromDatabase(){
-		notes = SQLite.select().from(Note.class).queryList();
+		notes = NotesDAO.getLatestNotes();
 		notifyDataSetChanged();
 	}
 
