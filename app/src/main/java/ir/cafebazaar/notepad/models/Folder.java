@@ -1,5 +1,6 @@
 package ir.cafebazaar.notepad.models;
 
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -9,6 +10,7 @@ import java.util.Date;
 /**
  * Created by MohMah on 8/17/2016.
  */
+@ModelContainer
 @Table(database = AppDatabase.class, allFields = true)
 public class Folder extends BaseModel{
 

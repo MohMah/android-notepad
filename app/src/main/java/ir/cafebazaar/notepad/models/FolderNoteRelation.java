@@ -1,7 +1,7 @@
 package ir.cafebazaar.notepad.models;
 
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -12,23 +12,18 @@ import ir.cafebazaar.notepad.database.AppDatabase;
 /**
  * Created by MohMah on 8/17/2016.
  */
+@ModelContainer
 @Table(database = AppDatabase.class, allFields = true)
 public class FolderNoteRelation extends BaseModel{
+	private static final String TAG = "FolderNoteRelation";
 
-	@PrimaryKey(autoincrement = true)
-	private int id;
-	@ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+	@PrimaryKey
+	@ForeignKey
 	private ForeignKeyContainer<Folder> folder;
-	@ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+
+	@PrimaryKey
+	@ForeignKey
 	private ForeignKeyContainer<Note> note;
-
-	public int getId(){
-		return id;
-	}
-
-	public void setId(int id){
-		this.id = id;
-	}
 
 	public ForeignKeyContainer<Folder> getFolder(){
 		return folder;

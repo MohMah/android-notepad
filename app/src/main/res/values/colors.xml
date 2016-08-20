@@ -9,4 +9,5 @@
 	<color name="divider">#BDBDBD</color>
 	<color name="iconAndText">#FFFFFF</color>
 	<color name="activityBackground">@color/md_grey_200</color>
+	<color name="transparent">#00ffffff</color>
 </resources>

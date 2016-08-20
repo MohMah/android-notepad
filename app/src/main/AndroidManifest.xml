@@ -23,6 +23,22 @@
 				android:label="Edit Folders"
 				>
 		</activity>
+		<activity
+				android:name=".activities.note.NoteActivity"
+				android:label="Note Activity"
+				android:theme="@style/AppTheme.WhiteBackground"
+				android:windowSoftInputMode="adjustResize|stateUnchanged"
+				>
+		</activity>
+		<activity
+				android:name=".activities.DebugActivity"
+				android:label="Debug Activity"
+				>
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
 	</application>
 
 </manifest>
