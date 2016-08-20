@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity{
 			subMenu.add(folder.getName()).setIcon(R.drawable.ic_folder_black_24dp);
 		}
 		menu
-				.add("Create & edit folders")
+				.add("Create or edit folders")
 				.setIcon(R.drawable.ic_add_white_24dp)
 				.setIntent(new EditFoldersActivityIntentBuilder().build(this));
 		menu.addSubMenu(" ").add(" ");
