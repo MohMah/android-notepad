@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
+import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.SimpleViewHolder;
 import ir.cafebazaar.notepad.views.NoteCardView;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -48,5 +51,27 @@ class Adapter extends RecyclerView.Adapter{
 	void loadFromDatabase(){
 		notes = SQLite.select().from(Note.class).queryList();
 		notifyDataSetChanged();
+	}
+
+	void registerEventBus(){
+		EventBus.getDefault().register(this);
+	}
+
+	void unregisterEventBus(){
+		EventBus.getDefault().unregister(this);
+	}
+
+	@Subscribe public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
+		Note note = noteEditedEvent.getNote();
+		if (notes.contains(note)){
+			int index = notes.indexOf(note);
+			notes.remove(index);
+			notes.add(0,note);
+			notifyItemMoved(index,0);
+			notifyItemChanged(0);
+		}else{
+			notes.add(0, note);
+			notifyItemInserted(0);
+		}
 	}
 }

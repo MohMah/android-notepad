@@ -3,6 +3,7 @@ package ir.cafebazaar.notepad.views;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +39,8 @@ public class NoteCardView extends CardView{
 		View view = LayoutInflater.from(context).inflate(R.layout.view_note_card, this, true);
 		RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		int noteGap = (int) Utils.dp2px(App.CONTEXT.getResources().getDimensionPixelSize(R.dimen.notes_gap))/2;
-		lp.setMargins(noteGap,noteGap,0,0);
+		int noteGap = (int) Utils.dp2px(App.CONTEXT.getResources().getDimensionPixelSize(R.dimen.notes_gap)) / 2;
+		lp.setMargins(noteGap, noteGap, 0, 0);
 		view.setLayoutParams(lp);
 		ButterKnife.bind(this, view);
 	}
@@ -50,8 +51,10 @@ public class NoteCardView extends CardView{
 
 	public void bindModel(Note note){
 		this.note = note;
-		title.setText(note.getTitle());
-		body.setText(note.getBody());
+		boolean isTitleEmpty = TextUtils.isEmpty(note.getTitle());
+		title.setText(isTitleEmpty ? "[Untitled]" : note.getTitle());
+		if (isTitleEmpty) title.setAlpha(0.5f);
+		else title.setAlpha(1f);
+		body.setText(note.getSpannedBody());
 	}
-
 }

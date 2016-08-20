@@ -5,10 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,9 +18,11 @@ import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
+import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -61,7 +63,6 @@ public class NoteActivity extends AppCompatActivity{
 			note.save();
 		}
 
-		bind();
 		foldersTag.addOnTagClickListener(new HashtagView.TagsClickListener(){
 			@Override public void onItemClicked(Object item){
 				Toast.makeText(NoteActivity.this, "Folder Clicked", Toast.LENGTH_SHORT).show();
@@ -69,24 +70,29 @@ public class NoteActivity extends AppCompatActivity{
 		});
 
 		body.enableActionModes(true);
-		startSupportActionMode(new ActionMode.Callback(){
-			@Override public boolean onCreateActionMode(ActionMode mode, Menu menu){
-				menu.add("Action 1").setIcon(R.drawable.ic_folder_black_24dp);
-				return true;
-			}
-
-			@Override public boolean onPrepareActionMode(ActionMode mode, Menu menu){
-				return false;
-			}
-
-			@Override public boolean onActionItemClicked(ActionMode mode, MenuItem item){
-				return false;
-			}
-
-			@Override public void onDestroyActionMode(ActionMode mode){
-
-			}
-		});
+		//body.setOnSelectionChangedListener(new RichEditText.OnSelectionChangedListener(){
+		//	@Override public void onSelectionChanged(int i, int i1, List<Effect<?>> list){
+		//		Log.e(TAG, "onSelectionChanged() called with: " + "i = [" + i + "], i1 = [" + i1 + "], list = [" + list + "]");
+		//	}
+		//});
+		//startSupportActionMode(new ActionMode.Callback(){
+		//	@Override public boolean onCreateActionMode(ActionMode mode, Menu menu){
+		//		menu.add("Action 1").setIcon(R.drawable.ic_folder_black_24dp);
+		//		return true;
+		//	}
+		//
+		//	@Override public boolean onPrepareActionMode(ActionMode mode, Menu menu){
+		//		return false;
+		//	}
+		//
+		//	@Override public boolean onActionItemClicked(ActionMode mode, MenuItem item){
+		//		return false;
+		//	}
+		//
+		//	@Override public void onDestroyActionMode(ActionMode mode){
+		//
+		//	}
+		//});
 	}
 
 	private void bind(){
@@ -94,12 +100,37 @@ public class NoteActivity extends AppCompatActivity{
 			title.setText(note.getTitle());
 		}
 		if (note.getBody() != null){
-			body.setText(note.getBody());
+			body.setText(note.getSpannedBody());
 		}
 		foldersTag.setData(FolderNoteDAO.getFolders(note), new HashtagView.DataTransform<Folder>(){
 			@Override public CharSequence prepare(Folder item){
 				return item.getName();
 			}
 		});
+	}
+
+	@Override protected void onStop(){
+		super.onStop();
+		assert note != null;
+		String processedTitle = title.getText().toString().trim();
+		String processedBody = body.getText().toString().trim();
+		if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody)){
+			note.delete();
+			return;
+		}
+		note.setSpannedBody(new SpannableString(processedBody));
+		note.setTitle(processedTitle);
+		note.save();
+		note.setLastModified(new Date());
+		EventBus.getDefault().post(new NoteEditedEvent(note));
+	}
+
+	@Override protected void onStart(){
+		super.onStart();
+		bind();
+	}
+
+	@Override public boolean onCreateOptionsMenu(Menu menu){
+		return super.onCreateOptionsMenu(menu);
 	}
 }

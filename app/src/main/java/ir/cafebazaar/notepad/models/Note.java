@@ -2,13 +2,20 @@ package ir.cafebazaar.notepad.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import com.commonsware.cwac.richtextutils.SpannableStringGenerator;
+import com.commonsware.cwac.richtextutils.SpannedXhtmlGenerator;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import ir.cafebazaar.notepad.database.AppDatabase;
+import java.io.IOException;
 import java.util.Date;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  * Created by MohMah on 8/17/2016.
@@ -100,5 +107,40 @@ public class Note extends BaseModel implements Parcelable{
 		dest.writeInt(id);
 		dest.writeString(title);
 		dest.writeString(body);
+	}
+
+	public Spannable getSpannedBody(){
+		SpannableStringGenerator spannableStringGenerator = new SpannableStringGenerator();
+		try{
+			return spannableStringGenerator.fromXhtml(body);
+		}catch (ParserConfigurationException e){
+			e.printStackTrace();
+		}catch (SAXException e){
+			e.printStackTrace();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+		return new SpannableString("!ERROR!");
+	}
+
+	public void setSpannedBody(Spannable spannedBody){
+		SpannedXhtmlGenerator spannedXhtmlGenerator = new SpannedXhtmlGenerator();
+		body = spannedXhtmlGenerator.toXhtml(spannedBody);
+		body = body.replaceAll("(?m)(^ *| +(?= |$))", "")
+		           .replaceAll("(?m)^$([\r\n]+?)(^$[\r\n]+?^)+", "$1")
+		           .replace("<br/>", "\n");
+	}
+
+	@Override public boolean equals(Object o){
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Note note = (Note) o;
+
+		return id == note.id;
+	}
+
+	@Override public int hashCode(){
+		return id;
 	}
 }
