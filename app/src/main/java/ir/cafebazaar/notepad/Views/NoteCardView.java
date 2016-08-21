@@ -71,16 +71,7 @@ public class NoteCardView extends CardView{
 				return item.getName();
 			}
 		};
-		List<Folder> shownFolders;
-		if (folders.size() <= 2)
-			shownFolders = folders;
-		else{
-			shownFolders = folders.subList(0, 2);
-			Folder folder = new Folder();
-			folder.setName("+" + (folders.size() - 2));
-			shownFolders.add(folder);
-		}
-		foldersTagView.setData(shownFolders, dt);
+		foldersTagView.setData(folders, dt);
 		if (note.getDrawingTrimmed() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{

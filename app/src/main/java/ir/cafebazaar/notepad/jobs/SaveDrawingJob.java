@@ -48,7 +48,7 @@ public class SaveDrawingJob extends Job{
 		Blob blob = new Blob(byteBlob);
 		note.setDrawing(blob);
 		note.save();
-		
+
 		EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 	}
 

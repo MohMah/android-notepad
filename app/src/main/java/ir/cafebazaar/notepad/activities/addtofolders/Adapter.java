@@ -2,14 +2,17 @@ package ir.cafebazaar.notepad.activities.addtofolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.activities.editfolders.NewFolderViewHolder;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
 import ir.cafebazaar.notepad.database.FoldersDAO;
+import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.FolderCreatedEvent;
 import ir.cafebazaar.notepad.events.FolderDeletedEvent;
 import ir.cafebazaar.notepad.models.Folder;
+import ir.cafebazaar.notepad.models.Note;
 import java.util.ArrayList;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
@@ -25,9 +28,11 @@ class Adapter extends RecyclerView.Adapter{
 	private List<Folder> folders;
 	private List<Folder> checkedFolders;
 	private int noteId;
+	private Note note;
 
 	public Adapter(int noteId){
 		this.noteId = noteId;
+		note = NotesDAO.getNote(noteId);
 	}
 
 	@Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -35,8 +40,8 @@ class Adapter extends RecyclerView.Adapter{
 			return new NewFolderViewHolder(
 					LayoutInflater.from(parent.getContext()).inflate(R.layout.view_new_folder, parent, false));
 		}else if (viewType == VIEW_TYPE_SELECT_A_FOLDER){
-			return new SelectFolderViewHolder(
-					LayoutInflater.from(parent.getContext()).inflate(R.layout.view_select_folder, parent, false), this);
+			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_select_folder, parent, false);
+			return new SelectFolderViewHolder(view, this);
 		}
 		return null;
 	}
@@ -46,7 +51,8 @@ class Adapter extends RecyclerView.Adapter{
 			position--;
 			SelectFolderViewHolder selectFolderViewHolder = (SelectFolderViewHolder) holder;
 			Folder thisFolder = folders.get(position);
-			selectFolderViewHolder.setFolderName(thisFolder.getName());
+			selectFolderViewHolder.setData(thisFolder, note);
+			selectFolderViewHolder.itemView.setTag(thisFolder);
 			selectFolderViewHolder.setChecked(checkedFolders.contains(thisFolder));
 		}
 	}
@@ -85,5 +91,9 @@ class Adapter extends RecyclerView.Adapter{
 		if (folders == null) folders = new ArrayList<>();
 		folders.add(0, folderCreatedEvent.getFolder());
 		notifyItemInserted(1);
+	}
+
+	public List<Folder> getCheckedFolders(){
+		return checkedFolders;
 	}
 }

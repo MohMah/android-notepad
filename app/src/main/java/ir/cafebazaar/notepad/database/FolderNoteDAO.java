@@ -44,4 +44,19 @@ public class FolderNoteDAO{
 		});
 		return notes;
 	}
+
+	public static void removeFolderNoteRelation(Folder folder, Note note){
+		SQLite
+				.delete()
+				.from(FolderNoteRelation.class)
+				.where(FolderNoteRelation_Table.note_id.is(note.getId()), FolderNoteRelation_Table.folder_id.is(folder.getId()))
+				.execute();
+	}
+
+	public static void createFolderNoteRelation(Folder folder, Note note){
+		FolderNoteRelation fnr = new FolderNoteRelation();
+		fnr.associateFolder(folder);
+		fnr.associateNote(note);
+		fnr.save();
+	}
 }

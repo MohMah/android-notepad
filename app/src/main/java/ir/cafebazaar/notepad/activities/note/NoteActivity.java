@@ -26,6 +26,7 @@ import ir.cafebazaar.notepad.database.FolderNoteDAO;
 import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
+import ir.cafebazaar.notepad.events.NoteFoldersUpdatedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.models.Note_Table;
@@ -150,6 +151,13 @@ public class NoteActivity extends AppCompatActivity{
 	@Subscribe(threadMode = ThreadMode.MAIN) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
 		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
 		if (note.getId() == noteEditedEvent.getNote().getId()){
+			bind();
+		}
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onNoteFoldersUpdatedEvent(NoteFoldersUpdatedEvent noteFoldersUpdatedEvent){
+		if (note.getId() == noteFoldersUpdatedEvent.getNoteId()){
 			bind();
 		}
 	}

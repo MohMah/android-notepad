@@ -10,6 +10,8 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.events.NoteFoldersUpdatedEvent;
+import org.greenrobot.eventbus.EventBus;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -54,5 +56,6 @@ public class AddToFoldersActivity extends AppCompatActivity{
 	@Override protected void onStop(){
 		super.onStop();
 		adapter.unregisterEventBus();
+		EventBus.getDefault().post(new NoteFoldersUpdatedEvent(noteId));
 	}
 }
