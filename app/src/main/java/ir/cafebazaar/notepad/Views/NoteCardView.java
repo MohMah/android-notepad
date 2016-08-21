@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.greenfrvr.hashtagview.HashtagView;
 import ir.cafebazaar.notepad.App;
 import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.database.FolderNoteDAO;
+import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.Utils;
+import java.util.List;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -27,6 +31,7 @@ public class NoteCardView extends CardView{
 	@BindView(R.id.title) TextView title;
 	@BindView(R.id.body) TextView body;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
+	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	private Note note;
 
 	public NoteCardView(Context context){
@@ -53,12 +58,29 @@ public class NoteCardView extends CardView{
 	}
 
 	public void bindModel(Note note){
-		this.note = note;
 		boolean isTitleEmpty = TextUtils.isEmpty(note.getTitle());
-		title.setText(isTitleEmpty ? "[Untitled]" : note.getTitle());
-		if (isTitleEmpty) title.setAlpha(0.5f);
-		else title.setAlpha(1f);
+		boolean isBodyEmpty = TextUtils.isEmpty(note.getSpannedBody());
+		title.setText(note.getTitle());
 		body.setText(note.getSpannedBody());
+		title.setVisibility(isTitleEmpty ? GONE : VISIBLE);
+		body.setVisibility(isBodyEmpty ? GONE : VISIBLE);
+
+		List<Folder> folders = FolderNoteDAO.getFolders(note);
+		HashtagView.DataTransform<Folder> dt = new HashtagView.DataTransform<Folder>(){
+			@Override public CharSequence prepare(Folder item){
+				return item.getName();
+			}
+		};
+		List<Folder> shownFolders;
+		if (folders.size() <= 2)
+			shownFolders = folders;
+		else{
+			shownFolders = folders.subList(0, 2);
+			Folder folder = new Folder();
+			folder.setName("+" + (folders.size() - 2));
+			shownFolders.add(folder);
+		}
+		foldersTagView.setData(shownFolders, dt);
 		if (note.getDrawing() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
@@ -66,5 +88,6 @@ public class NoteCardView extends CardView{
 			Bitmap imageBitMap = Utils.getImage(note.getDrawing().getBlob());
 			drawingImage.setImageBitmap(imageBitMap);
 		}
+		this.note = note;
 	}
 }

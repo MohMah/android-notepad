@@ -52,7 +52,7 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.title) EditText title;
 	@BindView(R.id.body) RichEditText body;
-	@BindView(R.id.folders_tag_view) HashtagView foldersTag;
+	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
 	@BindView(R.id.create_time_text) TextView creationTimeTextView;
 	private boolean shouldFireDeleteEvent = false;
@@ -80,7 +80,7 @@ public class NoteActivity extends AppCompatActivity{
 
 		bind();
 
-		foldersTag.addOnTagClickListener(new HashtagView.TagsClickListener(){
+		foldersTagView.addOnTagClickListener(new HashtagView.TagsClickListener(){
 			@Override public void onItemClicked(Object item){
 				Toast.makeText(NoteActivity.this, "Folder Clicked", Toast.LENGTH_SHORT).show();
 			}
@@ -97,7 +97,7 @@ public class NoteActivity extends AppCompatActivity{
 		if (note.getBody() != null){
 			body.setText(note.getSpannedBody());
 		}
-		foldersTag.setData(FolderNoteDAO.getFolders(note), new HashtagView.DataTransform<Folder>(){
+		foldersTagView.setData(FolderNoteDAO.getFolders(note), new HashtagView.DataTransform<Folder>(){
 			@Override public CharSequence prepare(Folder item){
 				return item.getName();
 			}
