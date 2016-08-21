@@ -127,7 +127,6 @@ public class NoteActivity extends AppCompatActivity{
 				note.delete();
 				return;
 			}
-			//note = NotesDAO.getNote(note.getId());
 			note.setSpannedBody(body.getText());
 			note.setTitle(processedTitle);
 			note.setLastModified(new Date());
