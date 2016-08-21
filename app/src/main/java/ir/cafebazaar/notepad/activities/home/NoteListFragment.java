@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class NoteListFragment extends Fragment{
 		mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener(){
 			@Override public void onClick(View v){
-				//mDrawerLayout.openDrawer(Gravity.LEFT);//TODO
+				((HomeActivity) getActivity()).mDrawerLayout.openDrawer(Gravity.LEFT);
 			}
 		});
 		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
