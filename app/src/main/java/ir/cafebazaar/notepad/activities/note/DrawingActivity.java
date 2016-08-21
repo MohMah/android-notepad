@@ -23,6 +23,8 @@ public class DrawingActivity extends AppCompatActivity{
 	Integer noteId;
 	Note note;
 
+	private boolean hasDrawnSomething = false;
+
 	@BindView(R.id.drawing_pad) SignaturePad drawingPad;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -31,11 +33,24 @@ public class DrawingActivity extends AppCompatActivity{
 		DrawingActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
 		note = NotesDAO.getNote(noteId);
+		Log.e(TAG, "onCreate: noteId= " + noteId + ", note= " + note);
+		drawingPad.setOnSignedListener(new SignaturePad.OnSignedListener(){
+			@Override public void onStartSigning(){
+			}
+
+			@Override public void onSigned(){
+				hasDrawnSomething = true;
+			}
+
+			@Override public void onClear(){
+			}
+		});
 	}
 
 	@Override protected void onStop(){
 		super.onStop();
-		App.JOB_MANAGER.addJobInBackground(new SaveDrawingJob(drawingPad, note.getId()));
+		if (hasDrawnSomething)
+			App.JOB_MANAGER.addJobInBackground(new SaveDrawingJob(drawingPad, note.getId()));
 	}
 
 	@Override protected void onStart(){

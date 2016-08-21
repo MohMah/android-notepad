@@ -65,7 +65,7 @@ public class NoteCardView extends CardView{
 		title.setVisibility(isTitleEmpty ? GONE : VISIBLE);
 		body.setVisibility(isBodyEmpty ? GONE : VISIBLE);
 
-		List<Folder> folders = FolderNoteDAO.getFolders(note);
+		List<Folder> folders = FolderNoteDAO.getFolders(note.getId());
 		HashtagView.DataTransform<Folder> dt = new HashtagView.DataTransform<Folder>(){
 			@Override public CharSequence prepare(Folder item){
 				return item.getName();

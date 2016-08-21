@@ -59,6 +59,6 @@ public class SaveDrawingJob extends Job{
 				+ "], maxRunCount = ["
 				+ maxRunCount
 				+ "]");
-		return null;
+		return RetryConstraint.CANCEL;
 	}
 }

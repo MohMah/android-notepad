@@ -48,6 +48,11 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+		<activity
+				android:name=".activities.addtofolders.AddToFoldersActivity"
+				android:label="Edit Folders"
+				>
+		</activity>
 	</application>
 
 </manifest>

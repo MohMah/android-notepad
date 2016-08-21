@@ -74,4 +74,17 @@ public class Folder extends BaseModel implements Parcelable{
 		dest.writeInt(id);
 		dest.writeString(name);
 	}
+
+	@Override public boolean equals(Object o){
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Folder folder = (Folder) o;
+
+		return id == folder.id;
+	}
+
+	@Override public int hashCode(){
+		return id;
+	}
 }

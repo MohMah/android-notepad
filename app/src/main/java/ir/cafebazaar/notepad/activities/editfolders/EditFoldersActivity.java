@@ -25,7 +25,7 @@ public class EditFoldersActivity extends AppCompatActivity{
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_folders);
+		setContentView(R.layout.activity_list_of_folders);
 		EditFoldersActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
 		setSupportActionBar(mToolbar);
