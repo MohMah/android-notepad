@@ -27,6 +27,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity{
 	private static final String TAG = "HomeActivity";
 	private static final int ALL_NOTES_MENU_ID = -1;
+	private static final int EDIT_FOLDERS_MENU_ID = -2;
 
 	@BindView(R.id.navigation_view) NavigationView mNavigationView;
 	@BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -36,7 +37,6 @@ public class HomeActivity extends AppCompatActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		ButterKnife.bind(this);
-		//setSupportActionBar(mToolbar);
 		mDrawerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
 			@Override public void onGlobalLayout(){
 				mDrawerLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -46,14 +46,16 @@ public class HomeActivity extends AppCompatActivity{
 		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 			@Override public boolean onNavigationItemSelected(MenuItem item){
 				Log.e(TAG, "onNavigationItemSelected() called with: " + "item id = [" + item.getItemId() + "]");
-				int folderId = item.getItemId();
-				if (folderId == ALL_NOTES_MENU_ID){
+				int menuId = item.getItemId();
+				if (menuId == ALL_NOTES_MENU_ID){
 					setFragment(null);
+				}else if (menuId == EDIT_FOLDERS_MENU_ID){
+					startActivity(new EditFoldersActivityIntentBuilder().build(HomeActivity.this));
 				}else{
-					setFragment(FoldersDAO.getFolder(folderId));
+					setFragment(FoldersDAO.getFolder(menuId));
 				}
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
-				inflateNavigationMenus(folderId);
+				inflateNavigationMenus(menuId);
 				return true;
 			}
 		});
@@ -80,9 +82,8 @@ public class HomeActivity extends AppCompatActivity{
 					.setChecked(folder.getId() == checkedItemId);
 		}
 		menu
-				.add("Create or edit folders")
-				.setIcon(R.drawable.ic_add_white_24dp)
-				.setIntent(new EditFoldersActivityIntentBuilder().build(this));
+				.add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
+				.setIcon(R.drawable.ic_add_white_24dp);
 		menu.addSubMenu(" ").add(" ");
 	}
 

@@ -42,8 +42,8 @@ public class DrawingActivity extends AppCompatActivity{
 		super.onStart();
 		try{
 			drawingPad.setSignatureBitmap(Utils.getImage(note.getDrawing().getBlob()));
-		}catch (Exception e){
-			Log.e(TAG, "onStart: ", e);
+		}catch (NullPointerException e){
+			Log.i(TAG, "Empty Drawing onStart: ", e);
 		}
 	}
 }

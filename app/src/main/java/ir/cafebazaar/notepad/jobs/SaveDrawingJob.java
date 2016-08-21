@@ -41,7 +41,7 @@ public class SaveDrawingJob extends Job{
 		Note note = NotesDAO.getNote(noteId);
 		note.setDrawing(blob);
 		note.save();
-		EventBus.getDefault().post(new NoteEditedEvent(note));
+		EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 	}
 
 	@Override protected void onCancel(int cancelReason, @Nullable Throwable throwable){

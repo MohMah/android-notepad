@@ -105,11 +105,7 @@ public class NoteActivity extends AppCompatActivity{
 		if (note.getDrawing() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
-			if (drawingImage.getVisibility() == View.VISIBLE){
-				drawingImage.setAlpha(1f);
-			}else{
-				drawingImage.setVisibility(View.VISIBLE);
-			}
+			drawingImage.setVisibility(View.VISIBLE);
 			drawingImage.setImageBitmap(Utils.getImage(note.getDrawing().getBlob()));
 		}
 	}
@@ -123,7 +119,7 @@ public class NoteActivity extends AppCompatActivity{
 		}else{
 			String processedTitle = title.getText().toString().trim();
 			String processedBody = body.getText().toString().trim();
-			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody)){
+			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawing() == null){
 				note.delete();
 				return;
 			}
@@ -131,7 +127,7 @@ public class NoteActivity extends AppCompatActivity{
 			note.setTitle(processedTitle);
 			note.setLastModified(new Date());
 			note.save();
-			EventBus.getDefault().post(new NoteEditedEvent(note));
+			EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 		}
 	}
 
@@ -156,18 +152,12 @@ public class NoteActivity extends AppCompatActivity{
 	}
 
 	@OnClick({ R.id.edit_drawing_button, R.id.drawing_image }) void clickEditDrawingButton(){
-		drawingImage.setAlpha(0.5f);
 		Intent intent = new DrawingActivityIntentBuilder(note.getId()).build(this);
 		startActivity(intent);
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
-		Log.e(TAG, "onNoteEditedEvent() called with: "
-				+ "noteEditedEvent = ["
-				+ noteEditedEvent.getNote()
-				+ ", note id="
-				+ note.getId()
-				+ "]");
+		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
 		if (note.getId() == noteEditedEvent.getNote().getId()){
 			bind();
 		}

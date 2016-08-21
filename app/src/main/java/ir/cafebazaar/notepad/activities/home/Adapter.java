@@ -17,7 +17,6 @@ import ir.cafebazaar.notepad.views.NoteCardView;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -77,7 +76,8 @@ class Adapter extends RecyclerView.Adapter{
 		EventBus.getDefault().unregister(this);
 	}
 
-	@Subscribe(threadMode = ThreadMode.MAIN) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
+	@Subscribe public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
+		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
 		Note note = noteEditedEvent.getNote();
 		if (notes.contains(note)){
 			int index = notes.indexOf(note);
@@ -104,7 +104,7 @@ class Adapter extends RecyclerView.Adapter{
 							new View.OnClickListener(){
 								@Override public void onClick(View v){
 									note.save();
-									EventBus.getDefault().post(new NoteEditedEvent(note));
+									EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 								}
 							})
 					.show();
