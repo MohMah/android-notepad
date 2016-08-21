@@ -26,9 +26,11 @@
 	</android.support.design.widget.AppBarLayout>
 
 	<com.github.gcacace.signaturepad.views.SignaturePad
-			android:id="@+id/signature_pad"
+			android:id="@+id/drawing_pad"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:paddingBottom="56dp"
+			android:paddingTop="56dp"
 			app:penColor="@android:color/black"
 			/>
 

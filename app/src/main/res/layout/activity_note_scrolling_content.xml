@@ -4,22 +4,30 @@
 <ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginBottom="56dp"
+		android:layout_marginBottom="48dp"
+		android:layout_marginTop="56dp"
 		tools:showIn="@layout/activity_note"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools">
 
-	<RelativeLayout
+	<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+		<ImageView
+				android:id="@+id/drawing_image"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:scaleType="fitCenter"
+				android:visibility="gone"
+				/>
 
 		<EditText
 				android:id="@+id/title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_alignParentTop="true"
-				android:layout_marginTop="56dp"
 				android:background="@null"
 				android:focusableInTouchMode="true"
 				android:hint="Title"
@@ -39,7 +47,6 @@
 				android:id="@+id/body"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/title"
 				android:background="@null"
 				android:gravity="top|left"
 				android:hint="Note"
@@ -51,11 +58,11 @@
 				android:textSize="@dimen/h4"
 				/>
 
+
 		<com.greenfrvr.hashtagview.HashtagView
 				android:id="@+id/folders_tag_view"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/body"
 				android:padding="16dp"
 				app:rowDistribution="left"
 				app:rowGravity="left"
@@ -69,7 +76,7 @@
 				app:tagTextSize="@dimen/h5"
 				/>
 
-	</RelativeLayout>
+	</LinearLayout>
 </ScrollView>
 
 
