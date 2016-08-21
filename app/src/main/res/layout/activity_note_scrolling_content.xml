@@ -39,8 +39,6 @@
 				android:textSize="@dimen/h2"
 				android:textStyle="bold"
 				>
-
-			<requestFocus/>
 		</EditText>
 
 		<com.commonsware.cwac.richedit.RichEditText

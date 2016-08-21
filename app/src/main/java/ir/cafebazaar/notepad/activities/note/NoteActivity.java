@@ -103,11 +103,11 @@ public class NoteActivity extends AppCompatActivity{
 				return item.getName();
 			}
 		});
-		if (note.getDrawing() == null)
+		if (note.getDrawingTrimmed() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			drawingImage.setImageBitmap(Utils.getImage(note.getDrawing().getBlob()));
+			drawingImage.setImageBitmap(Utils.getImage(note.getDrawingTrimmed().getBlob()));
 		}
 		creationTimeTextView.setText("Created " + TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
 	}
@@ -162,7 +162,7 @@ public class NoteActivity extends AppCompatActivity{
 		}else{
 			String processedTitle = title.getText().toString().trim();
 			String processedBody = body.getText().toString().trim();
-			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawing() == null){
+			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawingTrimmed() == null){
 				SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
 				return;
 			}

@@ -81,11 +81,11 @@ public class NoteCardView extends CardView{
 			shownFolders.add(folder);
 		}
 		foldersTagView.setData(shownFolders, dt);
-		if (note.getDrawing() == null)
+		if (note.getDrawingTrimmed() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			Bitmap imageBitMap = Utils.getImage(note.getDrawing().getBlob());
+			Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed().getBlob());
 			drawingImage.setImageBitmap(imageBitMap);
 		}
 		this.note = note;
