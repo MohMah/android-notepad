@@ -36,7 +36,7 @@ public class NoteListFragment extends Fragment{
 	){
 		View view = inflater.inflate(R.layout.activity_home_content, container, false);
 		ButterKnife.bind(this, view);
-		folder = getArguments().getParcelable(NoteListFragment.FOLDER);
+		folder = getArguments() == null ? null : (Folder) getArguments().getParcelable(NoteListFragment.FOLDER);
 		return view;
 	}
 
