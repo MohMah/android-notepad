@@ -1,25 +1,22 @@
 package ir.cafebazaar.notepad.activities.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
+import android.view.ViewTreeObserver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.activities.editfolders.EditFoldersActivityIntentBuilder;
-import ir.cafebazaar.notepad.activities.note.NoteActivityIntentBuilder;
 import ir.cafebazaar.notepad.database.FoldersDAO;
 import ir.cafebazaar.notepad.models.Folder;
 import java.util.List;
@@ -29,58 +26,64 @@ import java.util.List;
  */
 public class HomeActivity extends AppCompatActivity{
 	private static final String TAG = "HomeActivity";
+	private static final int ALL_NOTES_MENU_ID = -1;
+	private static final int EDIT_FOLDERS_MENU_ID = -2;
 
-	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.navigation_view) NavigationView mNavigationView;
 	@BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-	@BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-	@BindView(R.id.new_note) FloatingActionButton mNewNoteFAB;
-	@BindView(R.id.zero_notes_view) View zeroNotesView;
-	Adapter adapter;
+	List<Folder> latestFolders;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		ButterKnife.bind(this);
-		setSupportActionBar(mToolbar);
-		mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-		mToolbar.setNavigationOnClickListener(new View.OnClickListener(){
-			@Override public void onClick(View v){
-				mDrawerLayout.openDrawer(Gravity.LEFT);
+		mDrawerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
+			@Override public void onGlobalLayout(){
+				mDrawerLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				setFragment(null);
 			}
 		});
-		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-		slm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-		mRecyclerView.setLayoutManager(slm);
-		adapter = new Adapter(zeroNotesView);
-		mRecyclerView.setAdapter(adapter);
-		adapter.loadFromDatabase();
+		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+			@Override public boolean onNavigationItemSelected(MenuItem item){
+				Log.e(TAG, "onNavigationItemSelected() called with: " + "item id = [" + item.getItemId() + "]");
+				int menuId = item.getItemId();
+				if (menuId == ALL_NOTES_MENU_ID){
+					setFragment(null);
+				}else if (menuId == EDIT_FOLDERS_MENU_ID){
+					startActivity(new EditFoldersActivityIntentBuilder().build(HomeActivity.this));
+				}else{
+					setFragment(FoldersDAO.getFolder(menuId));
+				}
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				inflateNavigationMenus(menuId);
+				return true;
+			}
+		});
 	}
 
 	@Override protected void onStart(){
 		super.onStart();
-		inflateNavigationMenus();
-		adapter.registerEventBus();
+		inflateNavigationMenus(ALL_NOTES_MENU_ID);
 	}
 
-	@Override protected void onStop(){
-		super.onStop();
-		adapter.unregisterEventBus();
-	}
-
-	public void inflateNavigationMenus(){
+	public void inflateNavigationMenus(int checkedItemId){
 		Menu menu = mNavigationView.getMenu();
 		menu.clear();
-		menu.add("Notes").setIcon(R.drawable.ic_note_white_24dp).setChecked(true);
+		menu
+				.add(Menu.NONE, ALL_NOTES_MENU_ID, Menu.NONE, "Notes")
+				.setIcon(R.drawable.ic_note_white_24dp)
+				.setChecked(checkedItemId == ALL_NOTES_MENU_ID);
 		final SubMenu subMenu = menu.addSubMenu("Folders");
-		List<Folder> folders = FoldersDAO.getLatestFolders();
-		for (Folder folder : folders){
-			subMenu.add(folder.getName()).setIcon(R.drawable.ic_folder_black_24dp);
+		latestFolders = FoldersDAO.getLatestFolders();
+		for (Folder folder : latestFolders){
+			subMenu
+					.add(Menu.NONE, folder.getId(), Menu.NONE, folder.getName())
+					.setIcon(R.drawable.ic_folder_black_24dp)
+					.setChecked(folder.getId() == checkedItemId);
 		}
 		menu
-				.add("Create & edit folders")
-				.setIcon(R.drawable.ic_add_white_24dp)
-				.setIntent(new EditFoldersActivityIntentBuilder().build(this));
+				.add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
+				.setIcon(R.drawable.ic_add_white_24dp);
 		menu.addSubMenu(" ").add(" ");
 	}
 
@@ -92,8 +95,22 @@ public class HomeActivity extends AppCompatActivity{
 		}
 	}
 
-	@OnClick(R.id.new_note) void clickNewNoteButton(){
-		Intent intent = new NoteActivityIntentBuilder().build(this);
-		this.startActivity(intent);
+	public void setFragment(Folder folder){
+		// Create a new fragment and specify the fragment to show based on nav item clicked
+		Fragment fragment = new NoteListFragment();
+		if (folder != null){
+			Bundle bundle = new Bundle();
+			bundle.putParcelable(NoteListFragment.FOLDER, folder);
+			fragment.setArguments(bundle);
+		}
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+		// Highlight the selected item has been done by NavigationView
+		//menuItem.setChecked(true);
+		//// Set action bar title
+		//setTitle(menuItem.getTitle());
+		//// Close the navigation drawer
+		//mDrawer.closeDrawers();
 	}
 }

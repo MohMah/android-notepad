@@ -1,6 +1,7 @@
 package ir.cafebazaar.notepad.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +26,7 @@ public class NoteCardView extends CardView{
 	private static final String TAG = "NoteCardView";
 	@BindView(R.id.title) TextView title;
 	@BindView(R.id.body) TextView body;
+	@BindView(R.id.drawing_image) ImageView drawingImage;
 	private Note note;
 
 	public NoteCardView(Context context){
@@ -56,5 +59,12 @@ public class NoteCardView extends CardView{
 		if (isTitleEmpty) title.setAlpha(0.5f);
 		else title.setAlpha(1f);
 		body.setText(note.getSpannedBody());
+		if (note.getDrawing() == null)
+			drawingImage.setVisibility(View.GONE);
+		else{
+			drawingImage.setVisibility(View.VISIBLE);
+			Bitmap imageBitMap = Utils.getImage(note.getDrawing().getBlob());
+			drawingImage.setImageBitmap(imageBitMap);
+		}
 	}
 }

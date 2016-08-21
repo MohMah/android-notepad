@@ -39,7 +39,6 @@ public class AppDatabase{
 
 				note.setBody(noteBody.trim());
 				note.setCreatedAt(new Date());
-				note.setLastModified(new Date());
 				note.setId(i);
 				note.setTitle(ithNote + "'s Title");
 				note.save();

@@ -6,6 +6,8 @@ import ir.cafebazaar.notepad.models.FolderNoteRelation;
 import ir.cafebazaar.notepad.models.FolderNoteRelation_Table;
 import ir.cafebazaar.notepad.models.Note;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -23,5 +25,23 @@ public class FolderNoteDAO{
 			folders.add(folderNoteRelation.getFolder().load());
 		}
 		return folders;
+	}
+
+	public static List<Note> getLatestNotes(Folder folder){
+		List<FolderNoteRelation> folderNoteRelations = SQLite
+				.select()
+				.from(FolderNoteRelation.class)
+				.where(FolderNoteRelation_Table.folder_id.is(folder.getId()))
+				.queryList();
+		List<Note> notes = new ArrayList<>(folderNoteRelations.size());
+		for (FolderNoteRelation folderNoteRelation : folderNoteRelations){
+			notes.add(folderNoteRelation.getNote().load());
+		}
+		Collections.sort(notes, new Comparator<Note>(){
+			@Override public int compare(Note lhs, Note rhs){
+				return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
+			}
+		});
+		return notes;
 	}
 }

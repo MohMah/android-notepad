@@ -12,4 +12,8 @@ public class FoldersDAO{
 	public static List<Folder> getLatestFolders(){
 		return SQLite.select().from(Folder.class).orderBy(Folder_Table.createdAt, false).queryList();
 	}
+
+	public static Folder getFolder(int id){
+		return SQLite.select().from(Folder.class).where(Folder_Table.id.is(id)).querySingle();
+	}
 }

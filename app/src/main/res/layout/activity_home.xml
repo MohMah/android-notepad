@@ -6,7 +6,11 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto">
 	<!-- The main content view -->
-	<include layout="@layout/activity_home_content"/>
+	<FrameLayout
+			android:id="@+id/fragment_container"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+
 	<!-- The navigation drawer -->
 	<android.support.design.widget.NavigationView
 			android:id="@+id/navigation_view"

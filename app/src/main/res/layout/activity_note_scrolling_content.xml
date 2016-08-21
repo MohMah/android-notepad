@@ -4,50 +4,49 @@
 <ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:layout_marginBottom="48dp"
+		android:layout_marginTop="56dp"
 		tools:showIn="@layout/activity_note"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools">
 
-	<RelativeLayout
+	<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+		<ImageView
+				android:id="@+id/drawing_image"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:scaleType="fitCenter"
+				android:visibility="gone"
+				/>
 
 		<EditText
 				android:id="@+id/title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_alignParentTop="true"
-				android:layout_marginTop="56dp"
 				android:background="@null"
+				android:focusableInTouchMode="true"
 				android:hint="Title"
 				android:imeOptions="actionNext"
 				android:padding="16dp"
 				android:singleLine="true"
 				android:textColor="@color/md_grey_900"
-				android:textColorHint="@color/md_grey_800"
+				android:textColorHint="@color/md_grey_500"
 				android:textSize="@dimen/h2"
 				android:textStyle="bold"
-				/>
+				>
 
-		<!--<EditText-->
-		<!--android:id="@+id/body"-->
-		<!--android:layout_width="match_parent"-->
-		<!--android:layout_height="wrap_content"-->
-		<!--android:layout_below="@id/title"-->
-		<!--android:background="@null"-->
-		<!--android:hint="Note"-->
-		<!--android:minLines="1"-->
-		<!--android:padding="16dp"-->
-		<!--android:textColor="@color/md_grey_900"-->
-		<!--android:textColorHint="@color/md_grey_800"-->
-		<!--android:textSize="@dimen/h4"-->
-		<!--/>-->
+			<requestFocus/>
+		</EditText>
+
 		<com.commonsware.cwac.richedit.RichEditText
 				android:id="@+id/body"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/title"
 				android:background="@null"
 				android:gravity="top|left"
 				android:hint="Note"
@@ -55,19 +54,15 @@
 				android:minLines="1"
 				android:padding="16dp"
 				android:textColor="@color/md_grey_900"
-				android:textColorHint="@color/md_grey_800"
+				android:textColorHint="@color/md_grey_400"
 				android:textSize="@dimen/h4"
-				>
+				/>
 
-			<requestFocus/>
-
-		</com.commonsware.cwac.richedit.RichEditText>
 
 		<com.greenfrvr.hashtagview.HashtagView
 				android:id="@+id/folders_tag_view"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/body"
 				android:padding="16dp"
 				app:rowDistribution="left"
 				app:rowGravity="left"
@@ -81,12 +76,7 @@
 				app:tagTextSize="@dimen/h5"
 				/>
 
-		<Space
-				android:layout_width="match_parent"
-				android:layout_height="56dp"
-				android:layout_below="@id/folders_tag_view"
-				/>
-	</RelativeLayout>
+	</LinearLayout>
 </ScrollView>
 
 

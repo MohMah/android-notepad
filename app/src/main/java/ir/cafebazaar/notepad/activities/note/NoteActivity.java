@@ -1,32 +1,40 @@
 package ir.cafebazaar.notepad.activities.note;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
+import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.models.Note_Table;
+import ir.cafebazaar.notepad.utils.TimeUtils;
+import ir.cafebazaar.notepad.utils.Utils;
 import ir.cafebazaar.notepad.utils.ViewUtils;
 import java.util.Date;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -37,12 +45,16 @@ import se.emilsjolander.intentbuilder.IntentBuilder;
 public class NoteActivity extends AppCompatActivity{
 	private static final String TAG = "NoteActivity";
 
-	@Extra @Nullable Note note;
+	@Extra @Nullable
+	Integer noteId;
+	Note note;
 
 	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.title) EditText title;
 	@BindView(R.id.body) RichEditText body;
 	@BindView(R.id.folders_tag_view) HashtagView foldersTag;
+	@BindView(R.id.drawing_image) ImageView drawingImage;
+	@BindView(R.id.create_time_text) TextView creationTimeTextView;
 	private boolean shouldFireDeleteEvent = false;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -58,15 +70,15 @@ public class NoteActivity extends AppCompatActivity{
 			}
 		});
 
-		Log.e(TAG, "onCreate() called with: " + "Note = [" + note + "]");
-
-		if (note == null){
+		if (noteId == null){
 			note = new Note();
 			Date now = new Date();
 			note.setCreatedAt(now);
-			note.setLastModified(now);
 			note.save();
+			noteId = note.getId();
 		}
+
+		bind();
 
 		foldersTag.addOnTagClickListener(new HashtagView.TagsClickListener(){
 			@Override public void onItemClicked(Object item){
@@ -78,6 +90,7 @@ public class NoteActivity extends AppCompatActivity{
 	}
 
 	private void bind(){
+		note = NotesDAO.getNote(noteId);
 		if (note.getTitle() != null){
 			title.setText(note.getTitle());
 		}
@@ -89,31 +102,38 @@ public class NoteActivity extends AppCompatActivity{
 				return item.getName();
 			}
 		});
+		if (note.getDrawing() == null)
+			drawingImage.setVisibility(View.GONE);
+		else{
+			drawingImage.setVisibility(View.VISIBLE);
+			drawingImage.setImageBitmap(Utils.getImage(note.getDrawing().getBlob()));
+		}
+		creationTimeTextView.setText("Created "+TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
 	}
 
 	@Override protected void onStop(){
 		super.onStop();
+		EventBus.getDefault().unregister(this);
 		assert note != null;
 		if (shouldFireDeleteEvent){
 			EventBus.getDefault().post(new NoteDeletedEvent(note));
 		}else{
 			String processedTitle = title.getText().toString().trim();
 			String processedBody = body.getText().toString().trim();
-			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody)){
+			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawing() == null){
 				note.delete();
 				return;
 			}
-			note.setSpannedBody(new SpannableString(processedBody));
+			note.setSpannedBody(body.getText());
 			note.setTitle(processedTitle);
-			note.setLastModified(new Date());
 			note.save();
-			EventBus.getDefault().post(new NoteEditedEvent(note));
+			EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 		}
 	}
 
 	@Override protected void onStart(){
 		super.onStart();
-		bind();
+		EventBus.getDefault().register(this);
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu){
@@ -129,5 +149,17 @@ public class NoteActivity extends AppCompatActivity{
 			onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@OnClick({ R.id.edit_drawing_button, R.id.drawing_image }) void clickEditDrawingButton(){
+		Intent intent = new DrawingActivityIntentBuilder(note.getId()).build(this);
+		startActivity(intent);
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
+		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
+		if (note.getId() == noteEditedEvent.getNote().getId()){
+			bind();
+		}
 	}
 }

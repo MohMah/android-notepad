@@ -1,7 +1,5 @@
 package ir.cafebazaar.notepad.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import com.commonsware.cwac.richtextutils.SpannableStringGenerator;
@@ -22,34 +20,16 @@ import org.xml.sax.SAXException;
  */
 @ModelContainer
 @Table(database = AppDatabase.class, allFields = true)
-public class Note extends BaseModel implements Parcelable{
+public class Note extends BaseModel{
 
-	public static final Creator<Note> CREATOR = new Creator<Note>(){
-		@Override
-		public Note createFromParcel(Parcel in){
-			return new Note(in);
-		}
-
-		@Override
-		public Note[] newArray(int size){
-			return new Note[size];
-		}
-	};
 	@PrimaryKey(autoincrement = true)
 	private int id;
 	private String title;
 	private String body;
 	private Blob drawing;
 	private Date createdAt;
-	private Date lastModified;
 
 	public Note(){}
-
-	protected Note(Parcel in){
-		id = in.readInt();
-		title = in.readString();
-		body = in.readString();
-	}
 
 	public int getId(){
 		return id;
@@ -89,24 +69,6 @@ public class Note extends BaseModel implements Parcelable{
 
 	public void setCreatedAt(Date createdAt){
 		this.createdAt = createdAt;
-	}
-
-	public Date getLastModified(){
-		return lastModified;
-	}
-
-	public void setLastModified(Date lastModified){
-		this.lastModified = lastModified;
-	}
-
-	@Override public int describeContents(){
-		return 0;
-	}
-
-	@Override public void writeToParcel(Parcel dest, int flags){
-		dest.writeInt(id);
-		dest.writeString(title);
-		dest.writeString(body);
 	}
 
 	public Spannable getSpannedBody(){
