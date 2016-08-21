@@ -28,7 +28,6 @@ public class Note extends BaseModel{
 	private String body;
 	private Blob drawing;
 	private Date createdAt;
-	private Date lastModified;
 
 	public Note(){}
 
@@ -70,14 +69,6 @@ public class Note extends BaseModel{
 
 	public void setCreatedAt(Date createdAt){
 		this.createdAt = createdAt;
-	}
-
-	public Date getLastModified(){
-		return lastModified;
-	}
-
-	public void setLastModified(Date lastModified){
-		this.lastModified = lastModified;
 	}
 
 	public Spannable getSpannedBody(){

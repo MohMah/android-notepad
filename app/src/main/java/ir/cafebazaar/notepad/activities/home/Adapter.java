@@ -81,10 +81,8 @@ class Adapter extends RecyclerView.Adapter{
 		Note note = noteEditedEvent.getNote();
 		if (notes.contains(note)){
 			int index = notes.indexOf(note);
-			notes.remove(index);
-			notes.add(0, note);
-			notifyItemMoved(index, 0);
-			notifyItemChanged(0);
+			notes.set(index,note);
+			notifyItemChanged(index);
 		}else{
 			notes.add(0, note);
 			notifyItemInserted(0);

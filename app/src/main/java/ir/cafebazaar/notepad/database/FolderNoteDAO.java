@@ -39,7 +39,7 @@ public class FolderNoteDAO{
 		}
 		Collections.sort(notes, new Comparator<Note>(){
 			@Override public int compare(Note lhs, Note rhs){
-				return lhs.getLastModified().compareTo(rhs.getLastModified());
+				return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
 			}
 		});
 		return notes;

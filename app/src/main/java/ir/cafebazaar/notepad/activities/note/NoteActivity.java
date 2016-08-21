@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,7 @@ import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.models.Note_Table;
+import ir.cafebazaar.notepad.utils.TimeUtils;
 import ir.cafebazaar.notepad.utils.Utils;
 import ir.cafebazaar.notepad.utils.ViewUtils;
 import java.util.Date;
@@ -52,6 +54,7 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.body) RichEditText body;
 	@BindView(R.id.folders_tag_view) HashtagView foldersTag;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
+	@BindView(R.id.create_time_text) TextView creationTimeTextView;
 	private boolean shouldFireDeleteEvent = false;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -67,13 +70,10 @@ public class NoteActivity extends AppCompatActivity{
 			}
 		});
 
-		Log.e(TAG, "onCreate() called with: " + "Note = [" + note + "]");
-
 		if (noteId == null){
 			note = new Note();
 			Date now = new Date();
 			note.setCreatedAt(now);
-			note.setLastModified(now);
 			note.save();
 			noteId = note.getId();
 		}
@@ -108,6 +108,7 @@ public class NoteActivity extends AppCompatActivity{
 			drawingImage.setVisibility(View.VISIBLE);
 			drawingImage.setImageBitmap(Utils.getImage(note.getDrawing().getBlob()));
 		}
+		creationTimeTextView.setText("Created "+TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
 	}
 
 	@Override protected void onStop(){
@@ -125,7 +126,6 @@ public class NoteActivity extends AppCompatActivity{
 			}
 			note.setSpannedBody(body.getText());
 			note.setTitle(processedTitle);
-			note.setLastModified(new Date());
 			note.save();
 			EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 		}

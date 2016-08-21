@@ -12,7 +12,7 @@ import java.util.List;
 public class NotesDAO{
 	public static List<Note> getLatestNotes(Folder folder){
 		if (folder == null)
-			return SQLite.select().from(Note.class).orderBy(Note_Table.lastModified, false).queryList();
+			return SQLite.select().from(Note.class).orderBy(Note_Table.createdAt, false).queryList();
 		else
 			return FolderNoteDAO.getLatestNotes(folder);
 	}
