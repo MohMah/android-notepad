@@ -1,5 +1,6 @@
 package ir.cafebazaar.notepad.activities.note;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -128,5 +130,10 @@ public class NoteActivity extends AppCompatActivity{
 			onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@OnClick(R.id.edit_drawing_button) void clickEditDrawingButton(){
+		Intent intent = new DrawingActivityIntentBuilder(note).build(this);
+		startActivity(intent);
 	}
 }
