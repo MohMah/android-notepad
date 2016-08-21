@@ -16,4 +16,8 @@ public class NotesDAO{
 		else
 			return FolderNoteDAO.getLatestNotes(folder);
 	}
+
+	public static Note getNote(int noteId){
+		return SQLite.select().from(Note.class).where(Note_Table.id.is(noteId)).querySingle();
+	}
 }

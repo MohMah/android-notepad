@@ -30,7 +30,7 @@ class Adapter extends RecyclerView.Adapter{
 		@Override public void onClick(View v){
 			if (v instanceof NoteCardView){
 				NoteCardView noteCardView = (NoteCardView) v;
-				Intent intent = new NoteActivityIntentBuilder().note(noteCardView.getNote()).build(v.getContext());
+				Intent intent = new NoteActivityIntentBuilder().noteId(noteCardView.getNote().getId()).build(v.getContext());
 				v.getContext().startActivity(intent);
 			}
 		}
