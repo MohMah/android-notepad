@@ -88,6 +88,7 @@ public class NoteActivity extends AppCompatActivity{
 			}
 		});
 
+		//TODO note working post-lollipop
 		body.enableActionModes(true);
 	}
 
