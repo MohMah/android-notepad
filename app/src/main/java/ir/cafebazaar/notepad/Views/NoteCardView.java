@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.greenfrvr.hashtagview.HashtagView;
 import ir.cafebazaar.notepad.App;
 import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.database.FolderNoteDAO;
+import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.Utils;
+import java.util.List;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -27,6 +31,7 @@ public class NoteCardView extends CardView{
 	@BindView(R.id.title) TextView title;
 	@BindView(R.id.body) TextView body;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
+	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	private Note note;
 
 	public NoteCardView(Context context){
@@ -53,18 +58,27 @@ public class NoteCardView extends CardView{
 	}
 
 	public void bindModel(Note note){
-		this.note = note;
 		boolean isTitleEmpty = TextUtils.isEmpty(note.getTitle());
-		title.setText(isTitleEmpty ? "[Untitled]" : note.getTitle());
-		if (isTitleEmpty) title.setAlpha(0.5f);
-		else title.setAlpha(1f);
+		boolean isBodyEmpty = TextUtils.isEmpty(note.getSpannedBody());
+		title.setText(note.getTitle());
 		body.setText(note.getSpannedBody());
-		if (note.getDrawing() == null)
+		title.setVisibility(isTitleEmpty ? GONE : VISIBLE);
+		body.setVisibility(isBodyEmpty ? GONE : VISIBLE);
+
+		List<Folder> folders = FolderNoteDAO.getFolders(note.getId());
+		HashtagView.DataTransform<Folder> dt = new HashtagView.DataTransform<Folder>(){
+			@Override public CharSequence prepare(Folder item){
+				return item.getName();
+			}
+		};
+		foldersTagView.setData(folders, dt);
+		if (note.getDrawingTrimmed() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			Bitmap imageBitMap = Utils.getImage(note.getDrawing().getBlob());
+			Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed().getBlob());
 			drawingImage.setImageBitmap(imageBitMap);
 		}
+		this.note = note;
 	}
 }

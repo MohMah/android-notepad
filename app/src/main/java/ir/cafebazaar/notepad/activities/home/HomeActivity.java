@@ -28,6 +28,8 @@ public class HomeActivity extends AppCompatActivity{
 	private static final String TAG = "HomeActivity";
 	private static final int ALL_NOTES_MENU_ID = -1;
 	private static final int EDIT_FOLDERS_MENU_ID = -2;
+	private static final int SAVE_DATABASE_MENU_ID = -3;
+	private static final int IMPORT_DATABASE_MENU_ID = -4;
 
 	@BindView(R.id.navigation_view) NavigationView mNavigationView;
 	@BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -43,6 +45,7 @@ public class HomeActivity extends AppCompatActivity{
 				setFragment(null);
 			}
 		});
+		final BackupRestoreDelegate backupRestoreDelegate = new BackupRestoreDelegate(this);
 		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 			@Override public boolean onNavigationItemSelected(MenuItem item){
 				Log.e(TAG, "onNavigationItemSelected() called with: " + "item id = [" + item.getItemId() + "]");
@@ -51,6 +54,10 @@ public class HomeActivity extends AppCompatActivity{
 					setFragment(null);
 				}else if (menuId == EDIT_FOLDERS_MENU_ID){
 					startActivity(new EditFoldersActivityIntentBuilder().build(HomeActivity.this));
+				}else if (menuId == SAVE_DATABASE_MENU_ID){
+					backupRestoreDelegate.backupDataToFile();
+				}else if (menuId == IMPORT_DATABASE_MENU_ID){
+					backupRestoreDelegate.showImportDialog();
 				}else{
 					setFragment(FoldersDAO.getFolder(menuId));
 				}
@@ -84,7 +91,13 @@ public class HomeActivity extends AppCompatActivity{
 		menu
 				.add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
 				.setIcon(R.drawable.ic_add_white_24dp);
-		menu.addSubMenu(" ").add(" ");
+		SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
+		backupSubMenu
+				.add(Menu.NONE, SAVE_DATABASE_MENU_ID, Menu.NONE, "Backup data")
+				.setIcon(R.drawable.ic_save_white_24dp);
+		backupSubMenu
+				.add(Menu.NONE, IMPORT_DATABASE_MENU_ID, Menu.NONE, "Restore data")
+				.setIcon(R.drawable.ic_restore_white_24dp);
 	}
 
 	@Override public void onBackPressed(){
@@ -105,12 +118,5 @@ public class HomeActivity extends AppCompatActivity{
 		}
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
-		// Highlight the selected item has been done by NavigationView
-		//menuItem.setChecked(true);
-		//// Set action bar title
-		//setTitle(menuItem.getTitle());
-		//// Close the navigation drawer
-		//mDrawer.closeDrawers();
 	}
 }

@@ -76,7 +76,7 @@ class Adapter extends RecyclerView.Adapter{
 		EventBus.getDefault().unregister(this);
 	}
 
-	@Subscribe public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
+	@Subscribe(sticky = true) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
 		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
 		Note note = noteEditedEvent.getNote();
 		if (notes.contains(note)){
@@ -87,9 +87,10 @@ class Adapter extends RecyclerView.Adapter{
 			notes.add(0, note);
 			notifyItemInserted(0);
 		}
+		EventBus.getDefault().removeStickyEvent(NoteEditedEvent.class);
 	}
 
-	@Subscribe public void onNoteDeletedEvent(NoteDeletedEvent noteDeletedEvent){
+	@Subscribe(sticky = true) public void onNoteDeletedEvent(NoteDeletedEvent noteDeletedEvent){
 		Log.e(TAG, "onNoteDeletedEvent() called with: " + "noteDeletedEvent = [" + noteDeletedEvent.getNote() + "]");
 		final Note note = noteDeletedEvent.getNote();
 		if (notes.contains(note)){
@@ -107,5 +108,6 @@ class Adapter extends RecyclerView.Adapter{
 							})
 					.show();
 		}
+		EventBus.getDefault().removeStickyEvent(NoteDeletedEvent.class);
 	}
 }

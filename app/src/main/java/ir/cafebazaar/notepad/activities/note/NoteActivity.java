@@ -21,10 +21,12 @@ import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.activities.addtofolders.AddToFoldersActivityIntentBuilder;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
 import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteDeletedEvent;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
+import ir.cafebazaar.notepad.events.NoteFoldersUpdatedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.models.Note_Table;
@@ -52,7 +54,7 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.title) EditText title;
 	@BindView(R.id.body) RichEditText body;
-	@BindView(R.id.folders_tag_view) HashtagView foldersTag;
+	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
 	@BindView(R.id.create_time_text) TextView creationTimeTextView;
 	private boolean shouldFireDeleteEvent = false;
@@ -80,7 +82,7 @@ public class NoteActivity extends AppCompatActivity{
 
 		bind();
 
-		foldersTag.addOnTagClickListener(new HashtagView.TagsClickListener(){
+		foldersTagView.addOnTagClickListener(new HashtagView.TagsClickListener(){
 			@Override public void onItemClicked(Object item){
 				Toast.makeText(NoteActivity.this, "Folder Clicked", Toast.LENGTH_SHORT).show();
 			}
@@ -97,38 +99,23 @@ public class NoteActivity extends AppCompatActivity{
 		if (note.getBody() != null){
 			body.setText(note.getSpannedBody());
 		}
-		foldersTag.setData(FolderNoteDAO.getFolders(note), new HashtagView.DataTransform<Folder>(){
+		foldersTagView.setData(FolderNoteDAO.getFolders(note.getId()), new HashtagView.DataTransform<Folder>(){
 			@Override public CharSequence prepare(Folder item){
 				return item.getName();
 			}
 		});
-		if (note.getDrawing() == null)
+		if (note.getDrawingTrimmed() == null)
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			drawingImage.setImageBitmap(Utils.getImage(note.getDrawing().getBlob()));
+			drawingImage.setImageBitmap(Utils.getImage(note.getDrawingTrimmed().getBlob()));
 		}
-		creationTimeTextView.setText("Created "+TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
+		creationTimeTextView.setText("Created " + TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
 	}
 
 	@Override protected void onStop(){
 		super.onStop();
 		EventBus.getDefault().unregister(this);
-		assert note != null;
-		if (shouldFireDeleteEvent){
-			EventBus.getDefault().post(new NoteDeletedEvent(note));
-		}else{
-			String processedTitle = title.getText().toString().trim();
-			String processedBody = body.getText().toString().trim();
-			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawing() == null){
-				note.delete();
-				return;
-			}
-			note.setSpannedBody(body.getText());
-			note.setTitle(processedTitle);
-			note.save();
-			EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
-		}
 	}
 
 	@Override protected void onStart(){
@@ -156,10 +143,41 @@ public class NoteActivity extends AppCompatActivity{
 		startActivity(intent);
 	}
 
+	@OnClick(R.id.edit_folders_button) void clickEditFoldersButton(){
+		Intent intent = new AddToFoldersActivityIntentBuilder(note.getId()).build(this);
+		startActivity(intent);
+	}
+
 	@Subscribe(threadMode = ThreadMode.MAIN) public void onNoteEditedEvent(NoteEditedEvent noteEditedEvent){
 		Log.e(TAG, "onNoteEditedEvent() called with: " + "noteEditedEvent = [" + noteEditedEvent + "]");
 		if (note.getId() == noteEditedEvent.getNote().getId()){
 			bind();
+		}
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onNoteFoldersUpdatedEvent(NoteFoldersUpdatedEvent noteFoldersUpdatedEvent){
+		if (note.getId() == noteFoldersUpdatedEvent.getNoteId()){
+			bind();
+		}
+	}
+
+	@Override public void onBackPressed(){
+		super.onBackPressed();
+		assert note != null;
+		if (shouldFireDeleteEvent){
+			EventBus.getDefault().postSticky(new NoteDeletedEvent(note));
+		}else{
+			String processedTitle = title.getText().toString().trim();
+			String processedBody = body.getText().toString().trim();
+			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawingTrimmed() == null){
+				SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
+				return;
+			}
+			note.setSpannedBody(body.getText());
+			note.setTitle(processedTitle);
+			note.save();
+			EventBus.getDefault().postSticky(new NoteEditedEvent(note.getId()));
 		}
 	}
 }

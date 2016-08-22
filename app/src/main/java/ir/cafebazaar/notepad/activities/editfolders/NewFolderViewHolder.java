@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Created by MohMah on 8/19/2016.
  */
-class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseable{
+public class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseable{
 	private final Adapter adapter;
 	@BindView(R.id.left_button) AppCompatImageButton leftButton;
 	@BindView(R.id.folder_name_text) TextView folderName;
@@ -49,6 +49,10 @@ class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseab
 		});
 	}
 
+	public NewFolderViewHolder(final View itemView){
+		this(itemView, null);
+	}
+
 	@OnClick(R.id.left_button) void clickLeftButton(View view){
 		if (isOpen()){
 			close();
@@ -69,9 +73,11 @@ class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseab
 		leftButton.setImageResource(R.drawable.ic_close_white_24dp);
 		leftButton.setAlpha(0.5f);
 		itemView.setBackgroundResource(R.color.md_white_1000);
-		if (adapter.getLastOpened() != null)
-			adapter.getLastOpened().close();
-		adapter.setLastOpened(this);
+		if (adapter != null){
+			if (adapter.getLastOpened() != null)
+				adapter.getLastOpened().close();
+			adapter.setLastOpened(this);
+		}
 	}
 
 	@Override public boolean isOpen(){
@@ -86,7 +92,7 @@ class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseab
 		leftButton.setAlpha(1f);
 		leftButton.setImageResource(R.drawable.ic_add_white_24dp);
 		itemView.setBackgroundResource(0);
-		if(adapter.getLastOpened() == this) adapter.setLastOpened(null);
+		if (adapter!=null && adapter.getLastOpened() == this) adapter.setLastOpened(null);
 	}
 
 	private void add(){

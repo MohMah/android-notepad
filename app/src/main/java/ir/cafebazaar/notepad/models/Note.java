@@ -27,6 +27,7 @@ public class Note extends BaseModel{
 	private String title;
 	private String body;
 	private Blob drawing;
+	private Blob drawingTrimmed;
 	private Date createdAt;
 
 	public Note(){}
@@ -61,6 +62,14 @@ public class Note extends BaseModel{
 
 	public void setDrawing(Blob drawing){
 		this.drawing = drawing;
+	}
+
+	public Blob getDrawingTrimmed(){
+		return drawingTrimmed;
+	}
+
+	public void setDrawingTrimmed(Blob drawingTrimmed){
+		this.drawingTrimmed = drawingTrimmed;
 	}
 
 	public Date getCreatedAt(){

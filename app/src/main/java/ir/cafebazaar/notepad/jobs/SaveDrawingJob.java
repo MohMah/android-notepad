@@ -35,12 +35,20 @@ public class SaveDrawingJob extends Job{
 
 	@Override public void onRun() throws Throwable{
 		Log.e(TAG, "onRun() called with: " + "");
-		Bitmap bitmap = signaturePad.getTransparentSignatureBitmap();
+
+		Bitmap bitmapTrimmed = signaturePad.getTransparentSignatureBitmap(true);
+		byte[] byteBlobTrimmed = Utils.getBytes(bitmapTrimmed);
+		Blob blobTrimmed = new Blob(byteBlobTrimmed);
+		Note note = NotesDAO.getNote(noteId);
+		note.setDrawingTrimmed(blobTrimmed);
+		note.save();
+
+		Bitmap bitmap = signaturePad.getTransparentSignatureBitmap(false);
 		byte[] byteBlob = Utils.getBytes(bitmap);
 		Blob blob = new Blob(byteBlob);
-		Note note = NotesDAO.getNote(noteId);
 		note.setDrawing(blob);
 		note.save();
+
 		EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 	}
 
@@ -59,6 +67,6 @@ public class SaveDrawingJob extends Job{
 				+ "], maxRunCount = ["
 				+ maxRunCount
 				+ "]");
-		return null;
+		return RetryConstraint.CANCEL;
 	}
 }

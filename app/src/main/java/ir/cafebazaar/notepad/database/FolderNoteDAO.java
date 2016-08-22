@@ -14,11 +14,11 @@ import java.util.List;
  * Created by MohMah on 8/20/2016.
  */
 public class FolderNoteDAO{
-	public static List<Folder> getFolders(Note note){
+	public static List<Folder> getFolders(int noteId){
 		List<FolderNoteRelation> folderNoteRelations = SQLite
 				.select()
 				.from(FolderNoteRelation.class)
-				.where(FolderNoteRelation_Table.note_id.is(note.getId()))
+				.where(FolderNoteRelation_Table.note_id.is(noteId))
 				.queryList();
 		List<Folder> folders = new ArrayList<>(folderNoteRelations.size());
 		for (FolderNoteRelation folderNoteRelation : folderNoteRelations){
@@ -43,5 +43,20 @@ public class FolderNoteDAO{
 			}
 		});
 		return notes;
+	}
+
+	public static void removeFolderNoteRelation(Folder folder, Note note){
+		SQLite
+				.delete()
+				.from(FolderNoteRelation.class)
+				.where(FolderNoteRelation_Table.note_id.is(note.getId()), FolderNoteRelation_Table.folder_id.is(folder.getId()))
+				.execute();
+	}
+
+	public static void createFolderNoteRelation(Folder folder, Note note){
+		FolderNoteRelation fnr = new FolderNoteRelation();
+		fnr.associateFolder(folder);
+		fnr.associateNote(note);
+		fnr.save();
 	}
 }

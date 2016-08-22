@@ -4,26 +4,29 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools">
+
 
 	<ImageView
 			android:id="@+id/drawing_image"
 			android:layout_width="match_parent"
 			android:layout_height="200dp"
+			android:layout_marginTop="5dp"
 			android:scaleType="fitCenter"
 			android:visibility="gone"
-	    android:layout_marginTop="5dp"
 			/>
+
 
 	<TextView
 			android:id="@+id/title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
 			android:layout_marginTop="10dp"
 			android:ellipsize="end"
 			android:maxLines="2"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
 			android:textColor="@color/md_grey_700"
 			android:textSize="@dimen/h2"
 			android:textStyle="bold"
@@ -34,14 +37,37 @@
 			android:id="@+id/body"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="10dp"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
 			android:layout_marginTop="10dp"
 			android:ellipsize="end"
 			android:maxLines="10"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
 			android:textColor="@color/md_grey_600"
 			android:textSize="@dimen/h4"
 			tools:text="متن طولانی یادداشت"
 			/>
+
+	<com.greenfrvr.hashtagview.HashtagView
+			android:id="@+id/folders_tag_view"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:clickable="false"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			app:dynamicMode="true"
+			app:rowDistribution="left"
+			app:rowGravity="left"
+			app:rowMode="wrap"
+			app:selectionMode="false"
+			app:tagBackground="@drawable/folder_tag_background"
+			app:tagEllipsize="end"
+			app:tagTextColor="@color/primaryText"
+			app:tagTextSize="@dimen/h6"
+			/>
+
+	<Space
+			android:layout_width="match_parent"
+			android:layout_height="10dp"/>
+
 </LinearLayout>
