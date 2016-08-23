@@ -49,19 +49,12 @@
 				android:name=".activities.DebugActivity"
 				android:label="Debug Activity"
 				>
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
 		</activity>
 		<activity
 				android:name=".activities.note.DrawingActivity"
 				android:label="Drawing Activity"
+				android:theme="@style/AppTheme.WhiteBackground"
 				>
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
 		</activity>
 		<activity
 				android:name=".activities.addtofolders.AddToFoldersActivity"
