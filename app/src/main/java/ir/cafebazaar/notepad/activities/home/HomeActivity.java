@@ -1,5 +1,6 @@
 package ir.cafebazaar.notepad.activities.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -34,6 +35,7 @@ public class HomeActivity extends AppCompatActivity{
 	@BindView(R.id.navigation_view) NavigationView mNavigationView;
 	@BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 	List<Folder> latestFolders;
+	BackupRestoreDelegate backupRestoreDelegate;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class HomeActivity extends AppCompatActivity{
 				setFragment(null);
 			}
 		});
-		final BackupRestoreDelegate backupRestoreDelegate = new BackupRestoreDelegate(this);
+		backupRestoreDelegate = new BackupRestoreDelegate(this);
 		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 			@Override public boolean onNavigationItemSelected(MenuItem item){
 				Log.e(TAG, "onNavigationItemSelected() called with: " + "item id = [" + item.getItemId() + "]");
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity{
 				}else if (menuId == SAVE_DATABASE_MENU_ID){
 					backupRestoreDelegate.backupDataToFile();
 				}else if (menuId == IMPORT_DATABASE_MENU_ID){
-					backupRestoreDelegate.showImportDialog();
+					backupRestoreDelegate.startFilePickerIntent();
 				}else{
 					setFragment(FoldersDAO.getFolder(menuId));
 				}
@@ -118,5 +120,12 @@ public class HomeActivity extends AppCompatActivity{
 		}
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+	}
+
+	@Override protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == BackupRestoreDelegate.PICK_RESTORE_FILE_REQUEST_CODE){
+			backupRestoreDelegate.handleRestoreFilePicked(resultCode, data);
+		}
 	}
 }
