@@ -36,7 +36,8 @@
 				android:singleLine="true"
 				android:textColor="@color/md_grey_900"
 				android:textColorHint="@color/md_grey_500"
-				android:textSize="@dimen/h2"
+				android:textCursorDrawable="@drawable/accent_cursor"
+				android:textSize="@dimen/h1"
 				android:textStyle="bold"
 				>
 		</EditText>
@@ -49,11 +50,13 @@
 				android:gravity="top|left"
 				android:hint="Note"
 				android:inputType="textMultiLine"
+				android:lineSpacingExtra="5dp"
 				android:minLines="1"
 				android:padding="16dp"
 				android:textColor="@color/md_grey_900"
 				android:textColorHint="@color/md_grey_400"
-				android:textSize="@dimen/h4"
+				android:textCursorDrawable="@drawable/accent_cursor"
+				android:textSize="@dimen/h2"
 				/>
 
 
@@ -73,6 +76,10 @@
 				app:tagTextColor="@color/primaryText"
 				app:tagTextSize="@dimen/h5"
 				/>
+
+		<Space
+				android:layout_width="match_parent"
+				android:layout_height="200dp"/>
 
 	</LinearLayout>
 </ScrollView>

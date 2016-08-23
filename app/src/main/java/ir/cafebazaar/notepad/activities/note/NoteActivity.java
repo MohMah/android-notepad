@@ -33,6 +33,7 @@ import ir.cafebazaar.notepad.models.Note_Table;
 import ir.cafebazaar.notepad.utils.TimeUtils;
 import ir.cafebazaar.notepad.utils.Utils;
 import ir.cafebazaar.notepad.utils.ViewUtils;
+import ir.cafebazaar.notepad.views.RichEditWidgetView;
 import java.util.Date;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,6 +58,7 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
 	@BindView(R.id.create_time_text) TextView creationTimeTextView;
+	@BindView(R.id.rich_edit_widget) RichEditWidgetView richEditWidgetView;
 	private boolean shouldFireDeleteEvent = false;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -80,6 +82,8 @@ public class NoteActivity extends AppCompatActivity{
 			noteId = note.getId();
 		}
 
+		richEditWidgetView.setRichEditView(body);
+
 		bind();
 
 		foldersTagView.addOnTagClickListener(new HashtagView.TagsClickListener(){
@@ -87,9 +91,6 @@ public class NoteActivity extends AppCompatActivity{
 				Toast.makeText(NoteActivity.this, "Folder Clicked", Toast.LENGTH_SHORT).show();
 			}
 		});
-
-		//TODO note working post-lollipop
-		body.enableActionModes(true);
 	}
 
 	private void bind(){

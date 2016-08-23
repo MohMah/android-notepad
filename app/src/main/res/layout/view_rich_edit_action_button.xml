@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatImageButton
+		android:layout_width="48dp"
+		android:layout_height="48dp"
+		android:layout_marginLeft="3dp"
+		android:background="?selectableItemBackgroundBorderless"
+		android:padding="12dp"
+		android:tint="@color/md_blue_grey_300"
+		tools:showIn="@layout/view_rich_edit_widget"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"/>
+
+	
