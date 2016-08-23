@@ -36,9 +36,9 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
     debug {
-//      minifyEnabled true
-//      shrinkResources true
-//      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      //      minifyEnabled true
+      //      shrinkResources true
+      //      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
 }
@@ -52,6 +52,9 @@ def getDate() {
 repositories {
   maven {
     url "https://s3.amazonaws.com/repo.commonsware.com"
+  }
+  maven {
+    url "http://dl.bintray.com/lukaville/maven"
   }
 }
 // variable that can be referenced to keep support libs consistent
@@ -77,4 +80,5 @@ dependencies {
   compile 'com.github.gcacace:signature-pad:1.2.0'
   compile 'com.birbit:android-priority-jobqueue:2.0.0'
   compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
+  compile 'com.nbsp:library:1.09'
 }
