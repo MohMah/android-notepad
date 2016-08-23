@@ -3,7 +3,9 @@ package ir.cafebazaar.notepad.activities.note;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -13,6 +15,7 @@ import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.jobs.SaveDrawingJob;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.Utils;
+import ir.cafebazaar.notepad.utils.ViewUtils;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -26,12 +29,20 @@ public class DrawingActivity extends AppCompatActivity{
 	private boolean hasDrawnSomething = false;
 
 	@BindView(R.id.drawing_pad) SignaturePad drawingPad;
+	@BindView(R.id.toolbar) Toolbar mToolbar;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_drawing);
 		DrawingActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
+		setSupportActionBar(mToolbar);
+		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.md_blue_grey_400));
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener(){
+			@Override public void onClick(View v){
+				onBackPressed();
+			}
+		});
 		note = NotesDAO.getNote(noteId);
 		Log.e(TAG, "onCreate: noteId= " + noteId + ", note= " + note);
 		drawingPad.setOnSignedListener(new SignaturePad.OnSignedListener(){

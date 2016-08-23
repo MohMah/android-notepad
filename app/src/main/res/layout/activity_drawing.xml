@@ -7,6 +7,14 @@
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools">
 
+	<com.github.gcacace.signaturepad.views.SignaturePad
+			android:id="@+id/drawing_pad"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_marginTop="56dp"
+			app:penColor="@android:color/black"
+			/>
+
 	<android.support.design.widget.AppBarLayout
 			android:id="@+id/appBar"
 			android:layout_width="match_parent"
@@ -25,20 +33,12 @@
 				/>
 	</android.support.design.widget.AppBarLayout>
 
-	<com.github.gcacace.signaturepad.views.SignaturePad
-			android:id="@+id/drawing_pad"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:paddingBottom="56dp"
-			android:paddingTop="56dp"
-			app:penColor="@android:color/black"
-			/>
 
-	<View
-			android:layout_width="match_parent"
-			android:layout_height="56dp"
-			android:layout_gravity="bottom"
-			android:background="@color/md_deep_orange_500"
-			/>
+	<!--<View-->
+	<!--android:layout_width="match_parent"-->
+	<!--android:layout_height="56dp"-->
+	<!--android:layout_gravity="bottom"-->
+	<!--android:background="@color/md_deep_orange_500"-->
+	<!--/>-->
 
 </android.support.design.widget.CoordinatorLayout>
