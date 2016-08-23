@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
@@ -121,7 +122,8 @@ class BackupRestoreDelegate{
 
 	private static final String TAG = "BackupRestoreDelegate";
 
-	private void showRestoreDialog(){
+	private void showRestoreDialog(String backupFilePath){
+		this.backupFilePath = backupFilePath;
 		new AlertDialog.Builder(activity, R.style.DialogTheme)
 				.setTitle("Restore Data")
 				.setMessage(
@@ -151,12 +153,15 @@ class BackupRestoreDelegate{
 
 	String backupFilePath;
 
-	public void handleRestoreFilePicked(int resultCode, Intent data){
+	public void handleFilePickedWithFilePicker(int resultCode, Intent data){
 		if (resultCode == Activity.RESULT_OK){
-			backupFilePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-			showRestoreDialog();
+			showRestoreDialog(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
 		}else{
 			Toast.makeText(activity, "Couldn't pick the file", Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	public void handleFilePickedWithIntentFilter(@NonNull Uri data){
+		showRestoreDialog(data.getPath());
 	}
 }
