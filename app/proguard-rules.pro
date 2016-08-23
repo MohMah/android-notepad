@@ -28,3 +28,6 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+#PrettyTime
+-keep class org.ocpsoft.prettytime.i18n.**
