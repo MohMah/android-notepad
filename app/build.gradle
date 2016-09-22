@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  compileSdkVersion 24
+  buildToolsVersion "24.0.2"
 
   //copy the mapping files somewhere else so they are not overridden.
 //  applicationVariants.all { variant ->
@@ -58,7 +58,7 @@ repositories {
   }
 }
 // variable that can be referenced to keep support libs consistent
-def supportLibVersion = '23.3.0'
+def supportLibVersion = '24.2.0'
 
 def dbflow_version = "3.1.1"
 
