@@ -10,6 +10,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,7 +21,6 @@ import ir.cafebazaar.notepad.database.FoldersDAO;
 import ir.cafebazaar.notepad.events.FolderDeletedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.utils.Utils;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -99,7 +101,7 @@ class EditFolderViewHolder extends RecyclerView.ViewHolder implements OpenClosea
 			return;
 		}
 		folder.setName(folderName.getText().toString());
-		folder.save();
+		FoldersDAO.save(folder);
 	}
 
 	private void delete(){
