@@ -2,32 +2,27 @@ package ir.cafebazaar.notepad.models;
 
 import android.text.Spannable;
 import android.text.SpannableString;
+
 import com.commonsware.cwac.richtextutils.SpannableStringGenerator;
 import com.commonsware.cwac.richtextutils.SpannedXhtmlGenerator;
-import com.raizlabs.android.dbflow.annotation.ModelContainer;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.data.Blob;
-import com.raizlabs.android.dbflow.structure.BaseModel;
-import ir.cafebazaar.notepad.database.AppDatabase;
+
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 import java.util.Date;
+
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
  * Created by MohMah on 8/17/2016.
  */
-@ModelContainer
-@Table(database = AppDatabase.class, allFields = true)
-public class Note extends BaseModel{
+public class Note {
 
-	@PrimaryKey(autoincrement = true)
 	private int id;
 	private String title;
 	private String body;
-	private Blob drawing;
-	private Blob drawingTrimmed;
+	private byte[] drawing;
+	private byte[] drawingTrimmed;
 	private Date createdAt;
 
 	public Note(){}
@@ -56,19 +51,19 @@ public class Note extends BaseModel{
 		this.body = body;
 	}
 
-	public Blob getDrawing(){
+	public byte[] getDrawing(){
 		return drawing;
 	}
 
-	public void setDrawing(Blob drawing){
+	public void setDrawing(byte[] drawing){
 		this.drawing = drawing;
 	}
 
-	public Blob getDrawingTrimmed(){
+	public byte[] getDrawingTrimmed(){
 		return drawingTrimmed;
 	}
 
-	public void setDrawingTrimmed(Blob drawingTrimmed){
+	public void setDrawingTrimmed(byte[] drawingTrimmed){
 		this.drawingTrimmed = drawingTrimmed;
 	}
 
@@ -121,4 +116,5 @@ public class Note extends BaseModel{
 				", title='" + title + '\'' +
 				"} " + super.toString();
 	}
+
 }

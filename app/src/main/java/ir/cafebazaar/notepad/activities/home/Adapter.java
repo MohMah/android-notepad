@@ -102,7 +102,7 @@ class Adapter extends RecyclerView.Adapter{
 					.setAction("UNDO",
 							new View.OnClickListener(){
 								@Override public void onClick(View v){
-									note.save();
+									NotesDAO.save(note);
 									EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 								}
 							})

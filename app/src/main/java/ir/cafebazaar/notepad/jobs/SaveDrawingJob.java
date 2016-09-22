@@ -4,16 +4,18 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.github.gcacace.signaturepad.views.SignaturePad;
-import com.raizlabs.android.dbflow.data.Blob;
+
+import org.greenrobot.eventbus.EventBus;
+
 import ir.cafebazaar.notepad.database.NotesDAO;
 import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.utils.Utils;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by MohMah on 8/21/2016.
@@ -38,16 +40,14 @@ public class SaveDrawingJob extends Job{
 
 		Bitmap bitmapTrimmed = signaturePad.getTransparentSignatureBitmap(true);
 		byte[] byteBlobTrimmed = Utils.getBytes(bitmapTrimmed);
-		Blob blobTrimmed = new Blob(byteBlobTrimmed);
 		Note note = NotesDAO.getNote(noteId);
-		note.setDrawingTrimmed(blobTrimmed);
-		note.save();
+		note.setDrawingTrimmed(byteBlobTrimmed);
+		NotesDAO.save(note);
 
 		Bitmap bitmap = signaturePad.getTransparentSignatureBitmap(false);
 		byte[] byteBlob = Utils.getBytes(bitmap);
-		Blob blob = new Blob(byteBlob);
-		note.setDrawing(blob);
-		note.save();
+		note.setDrawing(byteBlob);
+		NotesDAO.save(note);
 
 		EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
 	}

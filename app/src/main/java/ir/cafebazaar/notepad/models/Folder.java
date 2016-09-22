@@ -2,21 +2,14 @@ package ir.cafebazaar.notepad.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.raizlabs.android.dbflow.annotation.ModelContainer;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
-import ir.cafebazaar.notepad.database.AppDatabase;
+
 import java.util.Date;
 
 /**
  * Created by MohMah on 8/17/2016.
  */
-@ModelContainer
-@Table(database = AppDatabase.class, allFields = true)
-public class Folder extends BaseModel implements Parcelable{
+public class Folder implements Parcelable{
 
-	@PrimaryKey(autoincrement = true)
 	private int id;
 	private String name;
 	private Date createdAt;
@@ -86,5 +79,9 @@ public class Folder extends BaseModel implements Parcelable{
 
 	@Override public int hashCode(){
 		return id;
+	}
+
+	public void save() {
+		//TODO save folder to database
 	}
 }

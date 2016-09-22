@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import com.github.gcacace.signaturepad.views.SignaturePad;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.github.gcacace.signaturepad.views.SignaturePad;
 import ir.cafebazaar.notepad.App;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.database.NotesDAO;
@@ -67,7 +69,7 @@ public class DrawingActivity extends AppCompatActivity{
 	@Override protected void onStart(){
 		super.onStart();
 		try{
-			drawingPad.setSignatureBitmap(Utils.getImage(note.getDrawing().getBlob()));
+			drawingPad.setSignatureBitmap(Utils.getImage(note.getDrawing()));
 		}catch (NullPointerException e){
 			Log.i(TAG, "Empty Drawing onStart: ", e);
 		}

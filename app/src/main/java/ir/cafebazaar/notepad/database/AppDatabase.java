@@ -1,16 +1,14 @@
 package ir.cafebazaar.notepad.database;
 
-import com.raizlabs.android.dbflow.annotation.Database;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.Note;
 import java.util.Date;
 import java.util.Random;
+
+import ir.cafebazaar.notepad.models.Folder;
+import ir.cafebazaar.notepad.models.Note;
 
 /**
  * Created by MohMah on 8/17/2016.
  */
-@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION)
 public class AppDatabase{
 	public static final String NAME = "AppDatabase";
 	public static final int VERSION = 1;
@@ -41,16 +39,18 @@ public class AppDatabase{
 				note.setCreatedAt(new Date());
 				note.setId(i);
 				note.setTitle(ithNote + "'s Title");
-				note.save();
+				NotesDAO.save(note);
 			}
 		}
 
 		public static void deleteAllFolders(){
-			SQLite.delete().from(Folder.class).execute();
+//			SQLite.delete().from(Folder.class).execute();
+			//TODO delete all folders
 		}
 
 		public static void deleteAllNotes(){
-			SQLite.delete().from(Note.class).execute();
+//			SQLite.delete().from(Note.class).execute();
+			//TODO delete all notes
 		}
 	}
 }

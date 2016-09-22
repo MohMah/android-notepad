@@ -76,7 +76,7 @@ public class NoteCardView extends CardView{
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed().getBlob());
+			Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed());
 			drawingImage.setImageBitmap(imageBitMap);
 		}
 		this.note = note;
