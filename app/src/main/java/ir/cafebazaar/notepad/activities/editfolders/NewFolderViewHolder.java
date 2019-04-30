@@ -1,12 +1,17 @@
 package ir.cafebazaar.notepad.activities.editfolders;
 
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Date;
+
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -14,8 +19,6 @@ import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.events.FolderCreatedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.utils.Utils;
-import java.util.Date;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by MohMah on 8/19/2016.

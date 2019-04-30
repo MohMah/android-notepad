@@ -1,14 +1,17 @@
 package ir.cafebazaar.notepad.database;
 
+
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.FolderNoteRelation;
-import ir.cafebazaar.notepad.models.FolderNoteRelation_Table;
-import ir.cafebazaar.notepad.models.Note;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import ir.cafebazaar.notepad.models.Folder;
+import ir.cafebazaar.notepad.models.FolderNoteRelation;
+import ir.cafebazaar.notepad.models.FolderNoteRelation_Table;
+import ir.cafebazaar.notepad.models.Note;
 
 /**
  * Created by MohMah on 8/20/2016.
@@ -22,7 +25,8 @@ public class FolderNoteDAO{
 				.queryList();
 		List<Folder> folders = new ArrayList<>(folderNoteRelations.size());
 		for (FolderNoteRelation folderNoteRelation : folderNoteRelations){
-			folders.add(folderNoteRelation.getFolder().load());
+			folderNoteRelation.load();
+			folders.add(folderNoteRelation.getFolder());
 		}
 		return folders;
 	}
@@ -35,7 +39,8 @@ public class FolderNoteDAO{
 				.queryList();
 		List<Note> notes = new ArrayList<>(folderNoteRelations.size());
 		for (FolderNoteRelation folderNoteRelation : folderNoteRelations){
-			notes.add(folderNoteRelation.getNote().load());
+			folderNoteRelation.load();
+			notes.add(folderNoteRelation.getNote());
 		}
 		Collections.sort(notes, new Comparator<Note>(){
 			@Override public int compare(Note lhs, Note rhs){

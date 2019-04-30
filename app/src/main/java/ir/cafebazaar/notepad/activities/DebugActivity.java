@@ -1,11 +1,15 @@
 package ir.cafebazaar.notepad.activities;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.database.AppDatabase;
 import ir.cafebazaar.notepad.database.FoldersDAO;
@@ -13,7 +17,6 @@ import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.FolderNoteRelation;
 import ir.cafebazaar.notepad.models.Note;
 import ir.cafebazaar.notepad.models.Note_Table;
-import java.util.List;
 
 /**
  * Created by MohMah on 8/20/2016.

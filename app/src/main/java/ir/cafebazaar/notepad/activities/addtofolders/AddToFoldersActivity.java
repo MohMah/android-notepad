@@ -1,11 +1,11 @@
 package ir.cafebazaar.notepad.activities.addtofolders;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +41,7 @@ public class AddToFoldersActivity extends AppCompatActivity{
 			}
 		});
 		LinearLayoutManager llm = new LinearLayoutManager(this);
-		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		llm.setOrientation(RecyclerView.VERTICAL);
 		mRecyclerView.setLayoutManager(llm);
 		adapter = new Adapter(noteId);
 		mRecyclerView.setAdapter(adapter);

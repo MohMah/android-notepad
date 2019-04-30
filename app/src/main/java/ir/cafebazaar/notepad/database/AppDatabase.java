@@ -1,11 +1,14 @@
 package ir.cafebazaar.notepad.database;
 
+
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.Note;
+
 import java.util.Date;
 import java.util.Random;
+
+import ir.cafebazaar.notepad.models.Folder;
+import ir.cafebazaar.notepad.models.Note;
 
 /**
  * Created by MohMah on 8/17/2016.

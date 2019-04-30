@@ -16,7 +16,7 @@
 			android:tint="@color/md_blue_grey_600"
 			/>
 
-	<android.support.design.widget.TextInputLayout
+	<com.google.android.material.textfield.TextInputLayout
 			android:id="@+id/folder_name_til"
 			android:layout_width="match_parent"
 			android:layout_height="56dp"
@@ -38,7 +38,7 @@
 				android:singleLine="true"
 				android:textColorHint="@color/md_grey_500"
 				/>
-	</android.support.design.widget.TextInputLayout>
+	</com.google.android.material.textfield.TextInputLayout>
 
 	<ImageButton
 			android:id="@+id/right_button"

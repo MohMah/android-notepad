@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:showIn="@layout/activity_home"
@@ -15,13 +15,13 @@
 			app:penColor="@android:color/black"
 			/>
 
-	<android.support.design.widget.AppBarLayout
+	<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/appBar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
-		<android.support.v7.widget.Toolbar
+		<androidx.appcompat.widget.Toolbar
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 				app:title="Add Drawing"
 				app:titleTextAppearance="@style/Toolbar.TitleText"
 				/>
-	</android.support.design.widget.AppBarLayout>
+	</com.google.android.material.appbar.AppBarLayout>
 
 
 	<!--<View-->
@@ -41,4 +41,4 @@
 	<!--android:background="@color/md_deep_orange_500"-->
 	<!--/>-->
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
