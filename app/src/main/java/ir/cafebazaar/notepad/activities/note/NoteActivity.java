@@ -14,19 +14,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.commonsware.cwac.richedit.RichEditText;
-import com.greenfrvr.hashtagview.HashtagView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.commonsware.cwac.richedit.RichEditText;
+import com.greenfrvr.hashtagview.HashtagView;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.activities.addtofolders.AddToFoldersActivityIntentBuilder;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
@@ -36,10 +29,15 @@ import ir.cafebazaar.notepad.events.NoteEditedEvent;
 import ir.cafebazaar.notepad.events.NoteFoldersUpdatedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
+import ir.cafebazaar.notepad.models.Note_Table;
 import ir.cafebazaar.notepad.utils.TimeUtils;
 import ir.cafebazaar.notepad.utils.Utils;
 import ir.cafebazaar.notepad.utils.ViewUtils;
 import ir.cafebazaar.notepad.views.RichEditWidgetView;
+import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -80,7 +78,7 @@ public class NoteActivity extends AppCompatActivity{
 			note = new Note();
 			Date now = new Date();
 			note.setCreatedAt(now);
-			NotesDAO.save(note);
+			note.save();
 			noteId = note.getId();
 		}
 
@@ -112,7 +110,7 @@ public class NoteActivity extends AppCompatActivity{
 			drawingImage.setVisibility(View.GONE);
 		else{
 			drawingImage.setVisibility(View.VISIBLE);
-			drawingImage.setImageBitmap(Utils.getImage(note.getDrawingTrimmed()));
+			drawingImage.setImageBitmap(Utils.getImage(note.getDrawingTrimmed().getBlob()));
 		}
 		creationTimeTextView.setText("Created " + TimeUtils.getHumanReadableTimeDiff(note.getCreatedAt()));
 	}
@@ -135,8 +133,7 @@ public class NoteActivity extends AppCompatActivity{
 
 	@Override public boolean onOptionsItemSelected(MenuItem item){
 		if (item.getItemId() == R.id.delete_note){
-//			SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
-			NotesDAO.delete(note);
+			SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
 			shouldFireDeleteEvent = true;
 			onBackPressed();
 		}
@@ -176,13 +173,12 @@ public class NoteActivity extends AppCompatActivity{
 			String processedTitle = title.getText().toString().trim();
 			String processedBody = body.getText().toString().trim();
 			if (TextUtils.isEmpty(processedTitle) && TextUtils.isEmpty(processedBody) && note.getDrawingTrimmed() == null){
-//				SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
-				NotesDAO.delete(note);
+				SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
 				return;
 			}
 			note.setSpannedBody(body.getText());
 			note.setTitle(processedTitle);
-			NotesDAO.save(note);
+			note.save();
 			EventBus.getDefault().postSticky(new NoteEditedEvent(note.getId()));
 		}
 	}

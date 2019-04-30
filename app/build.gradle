@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.2"
+  compileSdkVersion 24
+  buildToolsVersion "24.0.2"
 
   //copy the mapping files somewhere else so they are not overridden.
 //  applicationVariants.all { variant ->
@@ -23,7 +23,7 @@ android {
 
 
   defaultConfig {
-    applicationId "ir.cafebazaar.notepad_test"
+    applicationId "ir.cafebazaar.notepad"
     minSdkVersion 14
     targetSdkVersion 21
     versionCode 2
@@ -58,17 +58,17 @@ repositories {
   }
 }
 // variable that can be referenced to keep support libs consistent
-def supportLibVersion = '23.4.0'
+def supportLibVersion = '24.2.0'
 
-//def dbflow_version = "3.1.1"
+def dbflow_version = "3.1.1"
 
 dependencies {
   compile "com.android.support:appcompat-v7:${supportLibVersion}"
   compile "com.android.support:design:${supportLibVersion}"
   compile "com.android.support:cardview-v7:${supportLibVersion}"
-//  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-//  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-//  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
   compile 'com.jakewharton:butterknife:8.2.1'
   apt 'com.jakewharton:butterknife-compiler:8.2.1'
   compile 'se.emilsjolander:intentbuilder-api:0.14.0'

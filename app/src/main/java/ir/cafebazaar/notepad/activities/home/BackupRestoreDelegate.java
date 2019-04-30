@@ -12,17 +12,16 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
-
+import com.raizlabs.android.dbflow.config.FlowManager;
+import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.database.AppDatabase;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.regex.Pattern;
-
-import ir.cafebazaar.notepad.R;
 
 /**
  * Created by MohMah on 8/22/2016.
@@ -42,11 +41,10 @@ class BackupRestoreDelegate{
 
 			if (sd.canWrite()){
 				String backupDBPath = "notepad_backup.nbu";
-//				File currentDB = activity.getDatabasePath(
-//						FlowManager
-//								.getDatabase(AppDatabase.NAME)
-//								.getDatabaseFileName());
-				File currentDB = null;//TODO
+				File currentDB = activity.getDatabasePath(
+						FlowManager
+								.getDatabase(AppDatabase.NAME)
+								.getDatabaseFileName());
 				final File backupDB = new File(sd, backupDBPath);
 
 				if (currentDB.exists()){
@@ -92,10 +90,10 @@ class BackupRestoreDelegate{
 			File sd = Environment.getExternalStorageDirectory();
 
 			if (sd.canWrite()){
-				File currentDB = /*activity.getDatabasePath(
+				File currentDB = activity.getDatabasePath(
 						FlowManager
 								.getDatabase(AppDatabase.NAME)
-								.getDatabaseFileName());*/null;//TODO
+								.getDatabaseFileName());
 				final File backupDB = new File(backupFilePath);
 
 				if (currentDB.exists()){

@@ -14,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ir.cafebazaar.notepad.R;
-import ir.cafebazaar.notepad.database.FoldersDAO;
 import ir.cafebazaar.notepad.events.FolderDeletedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.utils.Utils;
@@ -110,7 +109,7 @@ class EditFolderViewHolder extends RecyclerView.ViewHolder implements OpenClosea
 				.setPositiveButton("Delete Folder", new DialogInterface.OnClickListener(){
 					@Override public void onClick(DialogInterface dialog, int which){
 						dialog.dismiss();
-						FoldersDAO.delete(folder);
+						folder.delete();
 						EventBus.getDefault().post(new FolderDeletedEvent(folder));
 					}
 				})
