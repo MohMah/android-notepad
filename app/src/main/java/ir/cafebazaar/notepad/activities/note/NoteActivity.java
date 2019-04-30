@@ -2,9 +2,6 @@ package ir.cafebazaar.notepad.activities.note;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -14,13 +11,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Date;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ir.cafebazaar.notepad.R;
+import ir.cafebazaar.notepad.Views.RichEditWidgetView;
 import ir.cafebazaar.notepad.activities.addtofolders.AddToFoldersActivityIntentBuilder;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
 import ir.cafebazaar.notepad.database.NotesDAO;
@@ -33,11 +42,6 @@ import ir.cafebazaar.notepad.models.Note_Table;
 import ir.cafebazaar.notepad.utils.TimeUtils;
 import ir.cafebazaar.notepad.utils.Utils;
 import ir.cafebazaar.notepad.utils.ViewUtils;
-import ir.cafebazaar.notepad.views.RichEditWidgetView;
-import java.util.Date;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 
@@ -58,7 +62,8 @@ public class NoteActivity extends AppCompatActivity{
 	@BindView(R.id.folders_tag_view) HashtagView foldersTagView;
 	@BindView(R.id.drawing_image) ImageView drawingImage;
 	@BindView(R.id.create_time_text) TextView creationTimeTextView;
-	@BindView(R.id.rich_edit_widget) RichEditWidgetView richEditWidgetView;
+	@BindView(R.id.rich_edit_widget)
+	RichEditWidgetView richEditWidgetView;
 	private boolean shouldFireDeleteEvent = false;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState){

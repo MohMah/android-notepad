@@ -1,4 +1,4 @@
-package ir.cafebazaar.notepad.views;
+package ir.cafebazaar.notepad.Views;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -10,14 +10,17 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.commonsware.cwac.richedit.Effect;
 import com.commonsware.cwac.richedit.RichEditText;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ir.cafebazaar.notepad.App;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.utils.Utils;
-import java.util.List;
 
 import static com.commonsware.cwac.richedit.RichEditText.BOLD;
 import static com.commonsware.cwac.richedit.RichEditText.ITALIC;

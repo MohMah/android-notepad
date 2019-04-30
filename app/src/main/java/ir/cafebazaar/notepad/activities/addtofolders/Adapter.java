@@ -1,9 +1,16 @@
 package ir.cafebazaar.notepad.activities.addtofolders;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 import ir.cafebazaar.notepad.R;
 import ir.cafebazaar.notepad.activities.editfolders.NewFolderViewHolder;
 import ir.cafebazaar.notepad.database.FolderNoteDAO;
@@ -13,10 +20,6 @@ import ir.cafebazaar.notepad.events.FolderCreatedEvent;
 import ir.cafebazaar.notepad.events.FolderDeletedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Note;
-import java.util.ArrayList;
-import java.util.List;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by MohMah on 8/19/2016.

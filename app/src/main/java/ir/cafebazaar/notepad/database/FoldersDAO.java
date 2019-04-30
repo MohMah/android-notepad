@@ -1,9 +1,11 @@
 package ir.cafebazaar.notepad.database;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
+
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.models.Folder_Table;
-import java.util.List;
 
 /**
  * Created by MohMah on 8/19/2016.

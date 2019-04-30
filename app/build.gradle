@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 24
-  buildToolsVersion "24.0.2"
-
-  //copy the mapping files somewhere else so they are not overridden.
+    compileSdkVersion 28
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
+    //copy the mapping files somewhere else so they are not overridden.
 //  applicationVariants.all { variant ->
 //    variant.outputs.each { output ->
 //      if (variant.getBuildType().name == 'release') {
@@ -22,63 +23,64 @@ android {
 //  }
 
 
-  defaultConfig {
-    applicationId "ir.cafebazaar.notepad"
-    minSdkVersion 14
-    targetSdkVersion 21
-    versionCode 2
-    versionName "1.0"
-  }
-  buildTypes {
-    release {
-      minifyEnabled true
-      shrinkResources true
-      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    defaultConfig {
+        applicationId "ir.cafebazaar.notepad"
+        minSdkVersion 26
+        targetSdkVersion 28
+        versionCode 2
+        versionName "1.0"
     }
-    debug {
-      //      minifyEnabled true
-      //      shrinkResources true
-      //      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            //      minifyEnabled true
+            //      shrinkResources true
+            //      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
-  }
 }
 
 def getDate() {
-  def date = new Date()
-  def formattedDate = date.format('yyyy.MM.dd-HH.mm')
-  return formattedDate
+    def date = new Date()
+    def formattedDate = date.format('yyyy.MM.dd-HH.mm')
+    return formattedDate
 }
 
 repositories {
-  maven {
-    url "https://s3.amazonaws.com/repo.commonsware.com"
-  }
-  maven {
-    url "http://dl.bintray.com/lukaville/maven"
-  }
+    google()
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+    maven {
+        url "http://dl.bintray.com/lukaville/maven"
+    }
 }
 // variable that can be referenced to keep support libs consistent
 def supportLibVersion = '24.2.0'
 
-def dbflow_version = "3.1.1"
+def dbflow_version = "4.2.4"
 
 dependencies {
-  compile "com.android.support:appcompat-v7:${supportLibVersion}"
-  compile "com.android.support:design:${supportLibVersion}"
-  compile "com.android.support:cardview-v7:${supportLibVersion}"
-  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
-  compile 'com.jakewharton:butterknife:8.2.1'
-  apt 'com.jakewharton:butterknife-compiler:8.2.1'
-  compile 'se.emilsjolander:intentbuilder-api:0.14.0'
-  apt 'se.emilsjolander:intentbuilder-compiler:0.14.0'
-  compile 'org.greenrobot:eventbus:3.0.0'
-  compile 'com.github.greenfrvr:hashtag-view:1.2.1'
-  compile 'com.facebook.stetho:stetho:1.3.1'
-  compile 'com.commonsware.cwac:richedit:0.5.+'
-  compile 'com.github.gcacace:signature-pad:1.2.0'
-  compile 'com.birbit:android-priority-jobqueue:2.0.0'
-  compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
-  compile 'com.nbsp:library:1.09'
+    //noinspection GradleCompatible
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'se.emilsjolander:intentbuilder-api:0.14.0'
+    annotationProcessor 'se.emilsjolander:intentbuilder-compiler:0.14.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.github.greenfrvr:hashtag-view:1.2.1'
+    implementation 'com.facebook.stetho:stetho:1.3.1'
+    implementation 'com.commonsware.cwac:richedit:0.5.3'
+    implementation 'com.github.gcacace:signature-pad:1.2.0'
+    implementation 'com.birbit:android-priority-jobqueue:2.0.0'
+    implementation 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
+    implementation 'com.nbsp:library:1.09'
 }
