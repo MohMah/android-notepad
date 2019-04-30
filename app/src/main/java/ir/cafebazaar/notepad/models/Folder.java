@@ -80,4 +80,8 @@ public class Folder implements Parcelable{
 	@Override public int hashCode(){
 		return id;
 	}
+
+	public void save() {
+		//TODO save folder to database
+	}
 }

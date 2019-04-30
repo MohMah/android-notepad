@@ -20,7 +20,7 @@ public class AppDatabase{
 				folder.setCreatedAt(new Date());
 				folder.setId(i);
 				folder.setName("Folder " + (i + 1));
-				FoldersDAO.save(folder);
+				folder.save();
 			}
 		}
 

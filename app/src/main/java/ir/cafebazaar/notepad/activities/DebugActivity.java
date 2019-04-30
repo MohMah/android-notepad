@@ -28,7 +28,7 @@ public class DebugActivity extends AppCompatActivity{
 //			fnr.associateNote(note);
 //			fnr.save();
 //		}
-		//TODO assign all notes to first folder.
+		//TODO
 	}
 
 	@OnClick(R.id.create_5_notes) void create5Notes(){

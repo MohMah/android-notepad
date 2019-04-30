@@ -24,8 +24,4 @@ public class FoldersDAO {
     public static void delete(Folder folder) {
         //TODO remove folder from database
     }
-
-    public static void save(Folder folder) {
-        //TODO save flder to database
-    }
 }

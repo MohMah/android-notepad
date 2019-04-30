@@ -7,19 +7,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ir.cafebazaar.notepad.R;
-import ir.cafebazaar.notepad.database.FoldersDAO;
 import ir.cafebazaar.notepad.events.FolderCreatedEvent;
 import ir.cafebazaar.notepad.models.Folder;
 import ir.cafebazaar.notepad.utils.Utils;
+import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by MohMah on 8/19/2016.
@@ -104,7 +100,7 @@ public class NewFolderViewHolder extends RecyclerView.ViewHolder implements Open
 		Folder folder = new Folder();
 		folder.setCreatedAt(new Date());
 		folder.setName(folderName.getText().toString().trim());
-		FoldersDAO.save(folder);
+		folder.save();
 		EventBus.getDefault().post(new FolderCreatedEvent(folder));
 	}
 }
