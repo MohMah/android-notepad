@@ -33,8 +33,8 @@ public class DebugActivity extends AppCompatActivity{
 		List<Folder> folders = FoldersDAO.getLatestFolders();
 		for (Folder folder : folders){
 			FolderNoteRelation fnr = new FolderNoteRelation();
-			fnr.associateFolder(folder);
-			fnr.associateNote(note);
+			fnr.setFolder(folder);
+			fnr.setNote(note);
 			fnr.save();
 		}
 	}

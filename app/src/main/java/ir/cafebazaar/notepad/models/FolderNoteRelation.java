@@ -40,11 +40,4 @@ public class FolderNoteRelation extends BaseModel {
 		this.note = note;
 	}
 
-	public void associateNote(Note note){
-		this.note = note;
-	}
-
-	public void associateFolder(Folder folder){
-		this.folder = folder;
-	}
 }

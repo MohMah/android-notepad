@@ -60,8 +60,8 @@ public class FolderNoteDAO{
 
 	public static void createFolderNoteRelation(Folder folder, Note note){
 		FolderNoteRelation fnr = new FolderNoteRelation();
-		fnr.associateFolder(folder);
-		fnr.associateNote(note);
+		fnr.setFolder(folder);
+		fnr.setNote(note);
 		fnr.save();
 	}
 }
