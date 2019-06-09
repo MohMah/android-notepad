@@ -1,5 +1,7 @@
 Android Notepad
 ====================
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 <img src="https://raw.githubusercontent.com/MohMah/android-notepad/master/images/device-2016-08-23-192759.png" width="400" align="right" hspace="20">
 
