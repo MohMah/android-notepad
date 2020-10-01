@@ -8,19 +8,19 @@ Android Notepad
 *A simple note taking app for android inspired by Google Keep*
 
 ## Current Features:
-- Create simple notes with drawing
-- Rich text editing for notes
-- Create folders and put notes in them
-- Backup/restore all notes as a file
-- Minimum SDK 14+
+- Create simple notes with drawing.
+- Rich text editing for notes.
+- Create folders and put notes in them.
+- Backup/restore all notes as a file.
+- Minimum SDK 14+.
 
 ## TODO Features:
-- Pen size and color change in drawing
-- Each note has a color
-- Add voice recoring to the note
-- Add checkboxes to the notes
-- Add images to the note
-- Add reminders to the note
+- Pen size and color change in drawing.
+- Each note has a color.
+- Add voice recording to the note.
+- Add checkboxes to the notes.
+- Add images to the note.
+- Add reminders to the note.
 
 **[Download APK (v1.0.0)](https://github.com/MohMah/android-notepad/releases/download/v1.0.0/notepad-v1.0.0.apk)**
 
